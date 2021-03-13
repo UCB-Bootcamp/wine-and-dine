@@ -60,6 +60,14 @@
 	font-weight: 700;
 }
 
+.main-heading {
+	text-align: center;
+}
+
+.surprise {
+	text-align: center;
+}
+
 
 
 /*FOOTER CSS*/
@@ -67,8 +75,23 @@
     display: flex;
     min-height: 100vh;
     flex-direction: column;
+	width: 100%;
   }
 
   main {
     flex: 1 0 auto;
   }
+
+  .footer-links {
+	  display: inline;
+  }
+
+
+  ul {
+	  display: flex;
+	  justify-content: space-between;
+	  margin: 0 150px;
+  }
+
+
+  
