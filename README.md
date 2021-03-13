@@ -6,4 +6,4 @@ Users can like selected wines or recipes and have the option of viewing their li
 
 The application itself is built using HTML, CSS and Javascript. It also uses Material-UI as a UI Framework. It's deployed using Github Pages.
 
-The deployed application can be found [here](https://squidbeaks.github.io/wine-and-dine/).
+The deployed application can be found [here](https://ucb-bootcamp.github.io/wine-and-dine/).
