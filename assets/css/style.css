@@ -87,7 +87,7 @@
   }
 
 
-  ul {
+  #links-in-footer {
 	  display: flex;
 	  justify-content: space-between;
 	  margin: 0 150px;
