@@ -30,14 +30,14 @@ var removeExistingElems = function() {
 
 wineSelectorEl.addEventListener('change', function() {
 	removeExistingElems();
-	foodCardGenerator();
+	wineCardGenerator();
 
 });
 
 //create a function to generate the food card and description
-var foodCardGenerator = function() {
-	var foodCardContainer = document.createElement('div');
-	foodCardContainer.innerHTML = `<div class="container">
+var wineCardGenerator = function() {
+	var wineCardContainer = document.createElement('div');
+	wineCardContainer.innerHTML = `<div class="container">
 	<div class="row">
 			<div class="col s12 m5">
 					<div class="row">
@@ -98,7 +98,7 @@ var foodCardGenerator = function() {
 			</div>
 	</div>
 </div>`;
-	mainEl.appendChild(foodCardContainer);
+	mainEl.appendChild(wineCardContainer);
 }
 
 //create something to display the 3 options to the right
