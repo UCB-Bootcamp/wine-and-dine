@@ -1,9 +1,12 @@
   // DOM VARIABLES GO HERE
-var wineSelectorEl = document.querySelector('#wineSelector'); 
-var mainEl = document.querySelector('#main');
-var headerEl = document.querySelector('#header');
-var selectedWineOption = wineSelectorEl.options[wineSelectorEl.selectedIndex].text;
-var selectedOptionVal = wineSelectorEl.value;
+const wineSelectorEl = document.querySelector('#wineSelector'); 
+const mainEl = document.querySelector('#main');
+const headerEl = document.querySelector('#header');
+const selectedWineOption = wineSelectorEl.options[wineSelectorEl.selectedIndex].text;
+const foodSelectorEl = document.querySelector('#foodSelector');
+
+
+
 console.log(selectedWineOption);
 
  // Initializing the DOM Form functions for Materialize (DROP DOWNS)
@@ -29,15 +32,27 @@ var removeExistingElems = function() {
 }
 
 wineSelectorEl.addEventListener('change', function() {
+	// Take the wine selected and pass into a variable to generate the title in the card
+	var title = wineSelectorEl.value;
 	removeExistingElems();
-	wineCardGenerator();
-
+	infoCardGenerator(title);
 });
 
-//create a function to generate the food card and description
-var wineCardGenerator = function() {
-	var wineCardContainer = document.createElement('div');
-	wineCardContainer.innerHTML = `<div class="container">
+foodSelectorEl.addEventListener('change', function() {
+	// Take the food selected and pass into a variable to generate the title in the card
+	var title = foodSelectorEl.value;
+	removeExistingElems();
+	infoCardGenerator(title);
+});
+
+
+// refactoring information display function
+const infoCardGenerator = function(title) {
+	const infoCardContainer = document.createElement('div');
+
+// For the collapsible cards, we will be using a for loop.
+
+	infoCardContainer.innerHTML = `<div class="container">
 	<div class="row">
 			<div class="col s12 m5">
 					<div class="row">
@@ -45,7 +60,7 @@ var wineCardGenerator = function() {
 									<div class="card">
 											<div class="card-image">
 													<img src="./assets/images/sample-1.jpg">
-													<span class="card-title">` + selectedWineOption + `</span>
+													<span class="card-title">${title}</span>
 											</div>
 											<div class="card-content">
 													<div class ="row">
@@ -98,7 +113,7 @@ var wineCardGenerator = function() {
 			</div>
 	</div>
 </div>`;
-	mainEl.appendChild(wineCardContainer);
-}
+	mainEl.appendChild(infoCardContainer);
+};
 
 //create something to display the 3 options to the right
