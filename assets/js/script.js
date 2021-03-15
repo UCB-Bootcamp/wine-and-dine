@@ -87,11 +87,14 @@ const recipeCardGenerator = (recipe1, recipe2, recipe3) => {
 		recipeHeaderDiv.setAttribute("class", "collapsible-header");
 		// create body div and set class to collapsible-body
 		const recipeBodyDiv = document.createElement("div");
-		recipeBodyDiv.setAttribute("class", "collapsible-body");
+		recipeBodyDiv.classList= "collapsible-body";
 
 		// set content of header and body divs
 		recipeHeaderDiv.innerHTML = `<i class="material-icons">filter_drama</i> ${i}`;
-		recipeBodyDiv.innerHTML = `<span>Lorem ipsum dolor sit amet.</span> ${i}`;
+		recipeBodyDiv.innerHTML = `<row><div class="col s11 m11 l11 xl11"><span>Lorem ipsum dolor sit amet.</span></div> <div class="col s1 m1 l1 xl1"><i class="material-icons">favorite_border</i></row></div>`;
+
+		// readd heart icon
+		// <i class="material-icons">favorite_border</i>
 
 		// append everything
 		recipeLi.append(recipeHeaderDiv, recipeBodyDiv);
