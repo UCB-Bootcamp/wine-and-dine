@@ -12,17 +12,6 @@ const randomPairingEl = document.querySelector('#randomPairing');
 let info = "I am a full bodied wine made with grapes. Has been fermenting since the days of old";
 let rating = '⭐️⭐️⭐️⭐️⭐️';
 
-
-
-// Initializing the DOM Form functions for Materialize (DROP DOWNS)
-// THERE IS A VARIABLE BUG WITH THE VANILLA JS, JQUERY ADDED
-document.addEventListener('DOMContentLoaded', function() {
-	var selectElems = document.querySelectorAll('select');
-//	var selectInstances = M.FormSelect.init(selectElems, options);
-	var collapseElems = document.querySelectorAll('.collapsible');
-//	var collapseInstances = M.Collapsible.init(collapseElems, options);
-});
-
 //create a function to remove all html elements except the footer
 const removeExistingElems = () => {
   headerEl.innerHTML = '';
