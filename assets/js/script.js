@@ -24,7 +24,7 @@ $(document).ready(function(){
 });
 
 //create a function to remove all html elements except the footer
-var removeExistingElems = function() {
+const removeExistingElems = function() {
 	//console.log('blah');
   headerEl.innerHTML = '';
 	mainEl.innerHTML = '';
