@@ -4,8 +4,7 @@ const mainEl = document.querySelector('#main');
 const headerEl = document.querySelector('#header');
 const selectedWineOption = wineSelectorEl.options[wineSelectorEl.selectedIndex].text;
 const foodSelectorEl = document.querySelector('#foodSelector');
-
-
+const randomPairingEl = document.querySelector('#randomPairing');
 
 console.log(selectedWineOption);
 
@@ -43,6 +42,11 @@ foodSelectorEl.addEventListener('change', function() {
 	var title = foodSelectorEl.value;
 	removeExistingElems();
 	infoCardGenerator(title);
+});
+
+randomPairingEl.addEventListener('click', function() {
+	removeExistingElems();
+	infoCardGenerator();
 });
 
 
