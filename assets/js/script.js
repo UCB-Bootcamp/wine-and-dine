@@ -3,10 +3,12 @@ const wineSelectorEl = document.querySelector('#wineSelector');
 const mainEl = document.querySelector('#main');
 const headerEl = document.querySelector('#header');
 const foodSelectorEl = document.querySelector('#foodSelector');
+const randomPairingEl = document.querySelector('#randomPairing');
 
 // hardcoded examples
 let info = "I am a full bodied wine made with grapes. Has been fermenting since the days of old";
 let rating = '⭐️⭐️⭐️⭐️⭐️';
+
 
 
 // Initializing the DOM Form functions for Materialize (DROP DOWNS)
@@ -112,3 +114,4 @@ const recipeCardGenerator = (recipe1, recipe2, recipe3) => {
 
 listenerHandler(wineSelectorEl);
 listenerHandler(foodSelectorEl);
+listenerHandler(randomPairingEl);
