@@ -1,3 +1,6 @@
+// Materialize Initiation script
+M.AutoInit();
+
 // DOM VARIABLES GO HERE
 const wineSelectorEl = document.querySelector('#wineSelector'); 
 const mainEl = document.querySelector('#main');
@@ -18,12 +21,6 @@ document.addEventListener('DOMContentLoaded', function() {
 //	var selectInstances = M.FormSelect.init(selectElems, options);
 	var collapseElems = document.querySelectorAll('.collapsible');
 //	var collapseInstances = M.Collapsible.init(collapseElems, options);
-});
-
-// Initializing the DOM Form functions for Materialize (JQuery)
-$(document).ready(function(){
-	$('select').formSelect();
-	$('.collapsible').collapsible();
 });
 
 //create a function to remove all html elements except the footer
@@ -79,6 +76,11 @@ const infoCardGenerator = function(title, info, rating) {
 			</div>
 	</div>`;
 	mainEl.appendChild(infoCardDiv);
+
+	// Call the collapsible function again when the element is rendered
+	$(document).ready(function(){
+	$('.collapsible').collapsible();
+});
 };
 
 const recipeCardGenerator = (recipe1, recipe2, recipe3) => {
