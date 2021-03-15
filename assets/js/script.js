@@ -4,6 +4,9 @@ const mainEl = document.querySelector('#main');
 const headerEl = document.querySelector('#header');
 const foodSelectorEl = document.querySelector('#foodSelector');
 
+// hardcoded examples
+let info = "I am a full bodied wine made with grapes. Has been fermenting since the days of old";
+let rating = '⭐️⭐️⭐️⭐️⭐️';
 
 
 // Initializing the DOM Form functions for Materialize (DROP DOWNS)
@@ -30,8 +33,10 @@ const removeExistingElems = () => {
 const listenerHandler = el => {
 	el.addEventListener('change', function() {
 		var title = this.options[this.selectedIndex].text;
+		// fetch function dependent on `el`
 		removeExistingElems();
-		infoCardGenerator(title);
+		// these will go inside the fetch function because that's where we'll receive input for ratings, descr, and recipes
+		infoCardGenerator(title,info, rating); 
 		recipeCardGenerator();
 	});
 };
@@ -40,10 +45,8 @@ const listenerHandler = el => {
 const infoCardGenerator = function(title, info, rating) {
 	const infoCardDiv = document.createElement('div');
 	infoCardDiv.setAttribute("id", "content");
-	console.log(infoCardDiv)
 	infoCardDiv.innerHTML = 
-	`
-	<div class="container">
+	`<div class="container">
 		<div class="row" id="contentRow">
 			<div class="col s12 m5">
 				<div class="row">
@@ -56,14 +59,12 @@ const infoCardGenerator = function(title, info, rating) {
 							<div class="card-content">
 									<div class ="row">
 											<div class="col s6">
-													<h4>I will be the {info}</h4>
-													<p>I am a very simple card. I am good at containing small bits of information.
-													I am convenient because I require little markup to use effectively.</p>
+													<h4>Description</h4>
+													<p>${info}</p>
 											</div>
 											<div class="col s6">
-													<h4>I will be the {rating}</h4>
-													<p>I am a very simple card. I am good at containing small bits of information.
-													I am convenient because I require little markup to use effectively.</p>
+													<h4>Rating</h4>
+													<p>${rating}</p>
 											</div>
 									</div>
 							</div>
@@ -80,35 +81,29 @@ const infoCardGenerator = function(title, info, rating) {
 
 const recipeCardGenerator = (recipe1, recipe2, recipe3) => {
 	const recipeCardDiv = document.createElement("div");
+	const recipeUl = document.createElement("ul");
+	recipeUl.setAttribute("class", "collapsible");
 	recipeCardDiv.classList.add("col", "s12", "m7");
+	recipeCardDiv.append(recipeUl);
 	// For the collapsible cards, we will be using a for loop
-	recipeCardDiv.innerHTML = `
-	<ul class="collapsible">
-		<li>
-				<div class="collapsible-header">
-						<i class="material-icons">filter_drama</i>First
-				</div>
-				<div class="collapsible-body">
-						<span>Lorem ipsum dolor sit amet.</span>
-				</div>
-		</li>
-		<li>
-				<div class="collapsible-header">
-						<i class="material-icons">place</i>Second
-				</div>
-				<div class="collapsible-body">
-						<span>Lorem ipsum dolor sit amet.</span>
-				</div>
-		</li>
-		<li>
-				<div class="collapsible-header">
-						<i class="material-icons">whatshot</i>Third
-				</div>
-				<div class="collapsible-body">
-						<span>Lorem ipsum dolor sit amet.</span>
-				</div>
-		</li>
-	</ul>`;
+	for(let i =0; i < 3; i++) {
+		// create `li` el
+		const recipeLi = document.createElement("li");
+		// create header div and set class to collapsible-header
+		const recipeHeaderDiv = document.createElement("div");
+		recipeHeaderDiv.setAttribute("class", "collapsible-header");
+		// create body div and set class to collapsible-body
+		const recipeBodyDiv = document.createElement("div");
+		recipeBodyDiv.setAttribute("class", "collapsible-body");
+
+		// set content of header and body divs
+		recipeHeaderDiv.innerHTML = `<i class="material-icons">filter_drama</i> ${i}`;
+		recipeBodyDiv.innerHTML = `<span>Lorem ipsum dolor sit amet.</span> ${i}`;
+
+		// append everything
+		recipeLi.append(recipeHeaderDiv, recipeBodyDiv);
+		recipeUl.append(recipeLi);
+	}
 	$("#contentRow").append(recipeCardDiv);
 };
 
