@@ -181,14 +181,6 @@ const recipeCardGenerator = (recipe1, recipe2, recipe3) => {
 };
 
 
-const likeButtonHandler = () => {
-	console.log('hi :)');
-	// const newButton = '<i class="material-icons" id="favorite">favorite_border</i>';
-	// // replace #favorite-border with #favorite
-	// $("#favorite-border").replaceWith(newButton);
-};
-
-
 //create something to display the 3 options to the right
 
 listenerHandler(wineSelectorEl);
