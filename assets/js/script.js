@@ -26,50 +26,99 @@ const listenerHandler = el => {
 		// these will go inside the fetch function because that's where we'll receive input for ratings, descr, and recipes
 		infoCardGenerator(title, info, rating);
 		recipeCardGenerator();
-	});
+		
+	});	
 };
 
 // refactoring information display function
-const infoCardGenerator = function(title, info, rating) {
+const infoCardGenerator = function(title, info, rating, img ) {
+	// content row div
+	const contentRow = document.createElement('div');
+	contentRow.setAttribute("class", "container row");
+	contentRow.setAttribute("id", "contentRow");
+
+	// info card column div
 	const infoCardDiv = document.createElement('div');
-	infoCardDiv.setAttribute("id", "content");
-	infoCardDiv.innerHTML = 
-	`<div class="container">
-		<div class="row" id="contentRow">
-			<div class="col s12 m5">
-				<div class="row">
-					<div class="col s12">
-						<div class="card">
-							<div class="card-image">
-									<img src="./assets/images/sample-1.jpg">
-									<span class="card-title">${title}</span>
-							</div>
-							<div class="card-content">
-									<div class ="row">
-											<div class="col s6">
-													<h4>Description</h4>
-													<p>${info}</p>
-											</div>
-											<div class="col s6">
-													<h4>Rating</h4>
-													<p>${rating}</p>
-											</div>
-									</div>
-							</div>
-							<div class="card-action">
-									<a href="#">This is a link</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-	</div>`;
-	mainEl.appendChild(infoCardDiv);
+	infoCardDiv.setAttribute("class", "col s12 m5 card");
+	// append info card column div to content row
+	contentRow.append(infoCardDiv);
+
+	// info card image div
+	const cardImageDiv = document.createElement('div');
+	cardImageDiv.setAttribute("class", "card-image");
+	// append info card image div to info card column div
+	infoCardDiv.append(cardImageDiv);
+
+	// card image element
+	const cardImgEl = document.createElement('img');
+	cardImgEl.setAttribute("src", "./assets/images/sample-1.jpg");
+	// append image el to info card image div
+	cardImageDiv.append(cardImgEl);
+
+	// card title element 
+	const cardSpanEl = document.createElement('span');
+	cardSpanEl.setAttribute("class", "card-title");
+	cardSpanEl.textContent = title;
+	// append title span el to image div
+	cardImageDiv.append(cardSpanEl);
+
+	// card content div
+	const cardContentDiv = document.createElement('div');
+	cardContentDiv.setAttribute("class", "card-content");
+	// append card content div to infoCardDiv
+	infoCardDiv.append(cardContentDiv);
+
+	// create row div
+	const cardContentRow = document.createElement('div');
+	cardContentRow.setAttribute("class", "row");
+	// append row to infoCardDiv
+	cardContentDiv.append(cardContentRow);
+
+	// create description div and content
+	const descriptionDiv = document.createElement('div');
+	descriptionDiv.setAttribute("class", "col s6");
+	// append description
+	cardContentRow.append(descriptionDiv);
+
+	// create title el
+	const descriptionTitle = document.createElement('h4');
+	descriptionDiv.append(descriptionTitle);
+
+	descriptionTitle.textContent = 'description';
+
+	// create description el
+	const descriptionContent = document.createElement('p');
+	descriptionDiv.append(descriptionContent);
+
+	descriptionContent.textContent = info;
+
+
+	// create rating div
+	const ratingDiv = document.createElement("div");
+	ratingDiv.setAttribute("class", "col s6");
+	cardContentRow.append(ratingDiv);
+	// create rating el
+	const ratingTitle = document.createElement('h4');
+	ratingDiv.append(ratingTitle);
+
+	ratingTitle.textContent = 'rating';
+
+	// create description el
+	const descriptionRating = document.createElement('p');
+	ratingDiv.append(descriptionRating);
+
+	descriptionRating.textContent = rating;
+
+	// append info card col to main
+	mainEl.appendChild(contentRow);
+	// append info card div to info card col
+	contentRow.append(infoCardDiv);
+	// append info card 
 
 	// Call the collapsible function again when the element is rendered
 	$(document).ready(function(){
-	$('.collapsible').collapsible();
-});
+		$('.collapsible').collapsible();
+	});
 };
 
 const recipeCardGenerator = (recipe1, recipe2, recipe3) => {
@@ -78,7 +127,6 @@ const recipeCardGenerator = (recipe1, recipe2, recipe3) => {
 	recipeUl.setAttribute("class", "collapsible");
 	recipeCardDiv.classList.add("col", "s12", "m7");
 	recipeCardDiv.append(recipeUl);
-	// For the collapsible cards, we will be using a for loop
 	for(let i =0; i < 3; i++) {
 		// create `li` el
 		const recipeLi = document.createElement("li");
@@ -87,17 +135,49 @@ const recipeCardGenerator = (recipe1, recipe2, recipe3) => {
 		recipeHeaderDiv.setAttribute("class", "collapsible-header");
 		// create body div and set class to collapsible-body
 		const recipeBodyDiv = document.createElement("div");
-		recipeBodyDiv.setAttribute("class", "collapsible-body");
+		recipeBodyDiv.classList= "collapsible-body";
 
 		// set content of header and body divs
-		recipeHeaderDiv.innerHTML = `<i class="material-icons">filter_drama</i> ${i}`;
-		recipeBodyDiv.innerHTML = `<span>Lorem ipsum dolor sit amet.</span> ${i}`;
+		recipeHeaderDiv.innerHTML = `<i class="material-icons">filter_drama</i> Recipe ${i}`;
+
+		// create and append row
+		const recipeBodyRow = document.createElement('div');
+		recipeBodyDiv.append(recipeBodyRow);
+
+		// create and append text div
+		const recipeTextDiv = document.createElement('div');
+		recipeTextDiv.setAttribute("class", "col s11 m11 l11 xl11");
+		recipeBodyRow.append(recipeTextDiv);
+
+		// create recipe span
+		const recipeSpan = document.createElement('span');
+		recipeSpan.textContent = 'Lorem ipsum dolor sit amet.';
+		recipeTextDiv.append(recipeSpan);
+
+		// create like button div
+		const likeButtonDiv = document.createElement('div');
+		likeButtonDiv.setAttribute('class', 'col s1 m1 l1 xl1 favorites');
+		recipeBodyRow.append(likeButtonDiv);
+
+		// create like button
+		const likeButton = document.createElement('i');
+		likeButton.setAttribute('class', 'material-icons');
+		likeButton.textContent = 'favorite_border';
+		likeButtonDiv.append(likeButton);
+		likeButton.addEventListener("click", function() {
+			likeButton.textContent = 'favorite';
+		})
 
 		// append everything
 		recipeLi.append(recipeHeaderDiv, recipeBodyDiv);
 		recipeUl.append(recipeLi);
 	}
+	// append recipeCard container div to contentrow in main
 	$("#contentRow").append(recipeCardDiv);
+
+	// add event listeners
+
+
 };
 
 
