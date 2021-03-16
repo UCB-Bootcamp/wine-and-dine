@@ -165,6 +165,9 @@ const recipeCardGenerator = (recipe1, recipe2, recipe3) => {
 		likeButton.setAttribute('class', 'material-icons');
 		likeButton.textContent = 'favorite_border';
 		likeButtonDiv.append(likeButton);
+		likeButton.addEventListener("click", function() {
+			likeButton.textContent = 'favorite';
+		})
 
 		// append everything
 		recipeLi.append(recipeHeaderDiv, recipeBodyDiv);
@@ -172,6 +175,10 @@ const recipeCardGenerator = (recipe1, recipe2, recipe3) => {
 	}
 	// append recipeCard container div to contentrow in main
 	$("#contentRow").append(recipeCardDiv);
+
+	// add event listeners
+
+
 };
 
 
