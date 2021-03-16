@@ -7,6 +7,10 @@ const mainEl = document.querySelector('#main');
 const headerEl = document.querySelector('#header');
 const foodSelectorEl = document.querySelector('#foodSelector');
 const randomPairingEl = document.querySelector('#randomPairing');
+const aboutUsEl = document.querySelector('#about-us');
+
+const ourNames = ['Tim Weyel', 'Shy Gois', 'Leah Russell', 'Sydney Walcoff', 'Carlos Vadillo'];
+const ourTitles = ['Director of HTML', 'Data Courier', 'Github Cat Wrangler', 'Chief Mischief Officer (CMO)', 'Unpaid Intern'];
 
 // hardcoded examples
 let info = "I am a full bodied wine made with grapes. Has been fermenting since the days of old";
@@ -106,3 +110,39 @@ const recipeCardGenerator = (recipe1, recipe2, recipe3) => {
 listenerHandler(wineSelectorEl);
 listenerHandler(foodSelectorEl);
 listenerHandler(randomPairingEl);
+
+
+// clicking about us link
+aboutUsEl.addEventListener('click', function() {
+	// remove header and main elements (keeping the footer)
+	removeExistingElems();
+
+	const aboutUsHeader = document.createElement("h2");
+	aboutUsHeader.textContent = 'About Us';
+	aboutUsHeader.className = 'center';
+	aboutUsHeader.id = 'about-us-header';
+
+	const aboutUsBody = document.createElement("div");
+	aboutUsBody.innerHTML = `<div class="row center" id="card-holder-row"></div>`
+
+	mainEl.appendChild(aboutUsHeader);
+	mainEl.appendChild(aboutUsBody);
+
+	for (var i = 0; i < ourNames.length; i++) {
+		const cardHolderRow = document.querySelector('#card-holder-row');
+
+		const aboutUsCard = document.createElement("div");
+		aboutUsCard.classList = 'col s4 m2';
+		aboutUsCard.innerHTML = `<div class="card">
+		<div class="card-image">
+		  <img src="./assets/images/about-us-example-image.png">
+		</div>
+		<div class="card-content">
+		<span class="card-title">${ourNames[i]}</span>
+		  <p>${ourTitles[i]}</p>
+		</div>
+	  </div>`
+
+	  cardHolderRow.appendChild(aboutUsCard);
+	}
+});
