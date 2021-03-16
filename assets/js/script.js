@@ -25,14 +25,15 @@ const listenerHandler = el => {
 		removeExistingElems();
 		// these will go inside the fetch function because that's where we'll receive input for ratings, descr, and recipes
 		infoCardGenerator(title, info, rating); 
+		// call recipe
+		recipeCardGenerator();
 		
-	});
+	});	
 };
 
 // refactoring information display function
 const infoCardGenerator = function(title, info, rating, img ) {
-	// call recipe
-	recipeCardGenerator();
+	
 
 	// content row div
 	const contentRow = document.createElement('div');
@@ -162,11 +163,13 @@ const recipeCardGenerator = (recipe1, recipe2, recipe3) => {
 		// set content of header and body divs
 		recipeHeaderDiv.innerHTML = `<i class="material-icons">filter_drama</i> Recipe ${i}`;
 		recipeBodyDiv.innerHTML = `<row><div class="col s11 m11 l11 xl11"><span>Lorem ipsum dolor sit amet.</span></div> <div class="col s1 m1 l1 xl1 favorites"><i class="material-icons">favorite_border</i></div></row>`;
+		
+		
 		// on click listener 
-		$("favorites").on("click", "i", function() {
-			console.log("you clicked favorites");
+		// $("favorites").on("click", "i", function() {
+		// 	console.log("you clicked favorites");
 			
-		});
+		// });
 		// add favorites button
 		// const likeButton = $("#favorites"); 
 		// console.log(likeButton);
