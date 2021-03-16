@@ -33,8 +33,6 @@ const listenerHandler = el => {
 
 // refactoring information display function
 const infoCardGenerator = function(title, info, rating, img ) {
-	
-
 	// content row div
 	const contentRow = document.createElement('div');
 	contentRow.setAttribute("class", "container row");
@@ -64,7 +62,6 @@ const infoCardGenerator = function(title, info, rating, img ) {
 	cardSpanEl.textContent = title;
 	// append title span el to image div
 	cardImageDiv.append(cardSpanEl);
-	console.log(infoCardDiv);
 
 	// card content div
 	const cardContentDiv = document.createElement('div');
@@ -113,25 +110,6 @@ const infoCardGenerator = function(title, info, rating, img ) {
 
 	descriptionRating.textContent = rating;
 
-
-
-
-
-	/* 
-		`
-				<div class="col s6">
-						<h4>Description</h4>
-						<p></p>
-				</div>
-				<div class="col s6">
-						<h4>Rating</h4>
-						<p></p>
-				</div>
-		
-		<div class="card-action">
-				<a href="#">This is a link</a>
-		</div>`*/
-	;
 	// append info card col to main
 	mainEl.appendChild(contentRow);
 	// append info card div to info card col
@@ -140,8 +118,8 @@ const infoCardGenerator = function(title, info, rating, img ) {
 
 	// Call the collapsible function again when the element is rendered
 	$(document).ready(function(){
-	$('.collapsible').collapsible();
-});
+		$('.collapsible').collapsible();
+	});
 };
 
 const recipeCardGenerator = (recipe1, recipe2, recipe3) => {
@@ -162,38 +140,37 @@ const recipeCardGenerator = (recipe1, recipe2, recipe3) => {
 
 		// set content of header and body divs
 		recipeHeaderDiv.innerHTML = `<i class="material-icons">filter_drama</i> Recipe ${i}`;
-		recipeBodyDiv.innerHTML = `<row><div class="col s11 m11 l11 xl11"><span>Lorem ipsum dolor sit amet.</span></div> <div class="col s1 m1 l1 xl1 favorites"><i class="material-icons">favorite_border</i></div></row>`;
-		
-		
-		// on click listener 
-		// $("favorites").on("click", "i", function() {
-		// 	console.log("you clicked favorites");
-			
-		// });
-		// add favorites button
-		// const likeButton = $("#favorites"); 
-		// console.log(likeButton);
-		// recipeBodyDiv.append(likeButton);
-	
-	
-		// grab favorite border button 
-		// const likeButton = $("#favorites");
-		// console.log(likeButton);
 
-		// favorite button event listener
+		// create and append row
+		const recipeBodyRow = document.createElement('div');
+		recipeBodyDiv.append(recipeBodyRow);
 
-		// // on click listener 
-		// $("#favorite-border").click(function() {
-		// 	console.log(":(");
-		// 	// likeButtonHandler();
-		// });
+		// create and append text div
+		const recipeTextDiv = document.createElement('div');
+		recipeTextDiv.setAttribute("class", "col s11 m11 l11 xl11");
+		recipeBodyRow.append(recipeTextDiv);
+
+		// create recipe span
+		const recipeSpan = document.createElement('span');
+		recipeSpan.textContent = 'Lorem ipsum dolor sit amet.';
+		recipeTextDiv.append(recipeSpan);
+
+		// create like button div
+		const likeButtonDiv = document.createElement('div');
+		likeButtonDiv.setAttribute('class', 'col s1 m1 l1 xl1 favorites');
+		recipeBodyRow.append(likeButtonDiv);
+
+		// create like button
+		const likeButton = document.createElement('i');
+		likeButton.setAttribute('class', 'material-icons');
+		likeButton.textContent = 'favorite_border';
+		likeButtonDiv.append(likeButton);
 
 		// append everything
 		recipeLi.append(recipeHeaderDiv, recipeBodyDiv);
 		recipeUl.append(recipeLi);
 	}
-	
-
+	// append recipeCard container div to contentrow in main
 	$("#contentRow").append(recipeCardDiv);
 };
 
