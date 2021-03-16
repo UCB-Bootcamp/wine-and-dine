@@ -32,7 +32,7 @@
 
     <body>
         <!-- HEADER START -->
-        <header>  
+        <header id="header">  
             <div class='hero'>
                 <div class="hero-one"></div>
                 <div class="hero-two"></div>
@@ -44,38 +44,37 @@
         </header>
 
         <!-- MAIN START -->
-        <main>
+        <main id="main">
             <div class="container">
                 <div class="row">
-                    <div class="col s12">
-                        <h1 class="main-heading">
-                            I Want To Pair...
-                        </h1>
-                    </div>
+                    <h1 class="main-heading col s12">
+                        I Want To Pair...
+                    </h1>
                 </div>
 
                 <!-- OPTION INPUTS -->
                 <div class="row">
                     <div class="col s12 m6">
                         <div class="input-field col s12">
-                            <select>
+                            <select id="wineSelector">
                                 <option value="" disabled selected>Wine With Food</option>
-                                <option value="1">Option 1</option>
-                                <option value="2">Option 2</option>
-                                <option value="3">Option 3</option>
-                                <option value="4">Option 4</option>
-                                <option value="5">Option 5</option>
-                                <option value="6">Option 6</option>
-                                <option value="7">Option 7</option>
+                                <option value="Sauvignon Blanc">Sauvingon Blanc</option>
+                                <option value="Chardonnay">Chardonnay</option>
+                                <option value="Champagne">Champagne</option>
+                                <option value="Pinot Noir">Pinot Noir</option>
+                                <option value="Merlot">Merlot</option>
+                                <option value="Zinfandel">Zinfandel</option>
+                                <option value="Cabernet Sauvignon">Cabernet Sauvignon</option>
                                 <option value="8">Option 8</option>
                                 <option value="9">Option 9</option>
+
                             </select>
                             <label>Select a Wine</label>
                         </div>
                     </div>
                     <div class="col s12 m6">
                         <div class="input-field col s12">
-                            <select>
+                            <select id="foodSelector">
                                 <option value="" disabled selected>Food With Wine</option>
                                 <option value="1">Option 1</option>
                                 <option value="2">Option 2</option>
@@ -96,7 +95,7 @@
                 <div class="row">
                     <div class="col s12 surprise">
                         <h2>Surprise Me!</h2>
-                        <a id="scale-demo" href="#!" class="btn-floating btn-large scale-transition scale-in">
+                        <a id="randomPairing" href="#" class="btn-floating btn-large scale-transition scale-in">
                             <i class="material-icons">arrow_downward</i>
                         </a>
                     </div>
@@ -106,7 +105,7 @@
         </main>
 
         <!-- FOOTER START -->
-        <footer class="page-footer">
+        <footer class="page-footer red darken-4">
                 <div class="container row">
                     <div class="col s12 m4 l2">
                     <p>©2021 Copyright Text</p>
