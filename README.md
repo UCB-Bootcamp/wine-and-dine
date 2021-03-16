@@ -4,6 +4,6 @@ When a user selects a wine, they are given a list of recipes that would pair wit
 
 Users can like selected wines or recipes and have the option of viewing their liked items to revisit at a later time.
 
-The application itself is built using HTML, CSS and Javascript. It also uses Material-UI as a UI Framework. It's deployed using Github Pages.
+The application itself is built using HTML, CSS and Javascript. It also uses Materialize as a UI Framework, and used icons from Material.io. It's deployed using Github Pages.
 
 The deployed application can be found [here](https://ucb-bootcamp.github.io/wine-and-dine/).
