@@ -142,6 +142,7 @@ const recipeCardGenerator = (recipe1, recipe2, recipe3) => {
 
 		// create and append row
 		const recipeBodyRow = document.createElement('div');
+		recipeBodyRow.classList = "row";
 		recipeBodyDiv.append(recipeBodyRow);
 
 		// create and append text div
@@ -151,8 +152,9 @@ const recipeCardGenerator = (recipe1, recipe2, recipe3) => {
 
 		// create recipe span
 		const recipeSpan = document.createElement('span');
-		recipeSpan.textContent = 'Lorem ipsum dolor sit amet.';
+		recipeSpan.textContent = 'The best way to make lemonade is to make a simple syrup first, by heating water and sugar together until the sugar is completely dissolved, and then mix that with the lemon juice. The proportions will vary depending on how sweet and strong you like your lemonade, and how sour your lemons are to begin with. Late season lemons are less sour than early season lemons. Meyer lemons are sweeter than standard lemons.';
 		recipeTextDiv.append(recipeSpan);
+		console.log(recipeSpan);
 
 		// create like button div
 		const likeButtonDiv = document.createElement('div');
