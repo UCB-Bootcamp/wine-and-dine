@@ -14,7 +14,7 @@ let rating = '⭐️⭐️⭐️⭐️⭐️';
 
 //create a function to remove all html elements except the footer
 const removeExistingElems = () => {
-  headerEl.innerHTML = '';
+	headerEl.innerHTML = '';
 	mainEl.innerHTML = '';
 };
 
@@ -24,8 +24,7 @@ const listenerHandler = el => {
 		// fetch function dependent on `el`
 		removeExistingElems();
 		// these will go inside the fetch function because that's where we'll receive input for ratings, descr, and recipes
-		infoCardGenerator(title, info, rating); 
-		// call recipe
+		infoCardGenerator(title, info, rating);
 		recipeCardGenerator();
 		
 	});	
