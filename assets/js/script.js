@@ -1,6 +1,9 @@
 // Materialize Initiation script
 M.AutoInit();
 
+// API VARIABLES GO HERE
+const cocktailApi = "https://www.thecocktaildb.com/api/json/v1/1/random.php"
+
 // DOM VARIABLES GO HERE
 const wineSelectorEl = document.querySelector('#wineSelector'); 
 const mainEl = document.querySelector('#main');
@@ -8,6 +11,7 @@ const headerEl = document.querySelector('#header');
 const foodSelectorEl = document.querySelector('#foodSelector');
 const randomPairingEl = document.querySelector('#randomPairing');
 const aboutUsEl = document.querySelector('#about-us');
+const wantCocktailEl = document.querySelector('#want-cocktail');
 
 const ourNames = ['Tim Weyel', 'Shy Gois', 'Leah Russell', 'Sydney Walcoff', 'Carlos Vadillo'];
 const ourTitles = ['Director of HTML', 'Data Courier', 'Github Cat Wrangler', 'Chief Mischief Officer (CMO)', 'Unpaid Intern'];
@@ -33,6 +37,40 @@ const listenerHandler = el => {
 		
 	});	
 };
+
+
+const getCocktail = function() {
+	fetch(cocktailApi).then(res => res.json()).then(function(response){
+	var drinkData = [];
+	drinkData = response.drinks;
+	drinkName = drinkData[0].strDrink;
+	drinkRecipe = drinkData[0].strInstructions;
+	// calling the cocktail generating function
+	displayCocktail(drinkName, drinkRecipe);
+
+	});
+};
+// Test code from Manny either option works
+// const getCocktail = function() {
+// 	fetch(cocktailApi).then(function(response){
+// 		if (response.ok) {
+			
+// 			response.json().then(response => {
+// 				console.log(response);
+// 			})
+		
+// 		};
+// 	});
+// };
+
+const displayCocktail = function(drinkName, drinkRecipe) {
+	console.log(drinkName);
+	console.log(drinkRecipe);
+	removeExistingElems();
+
+}
+
+wantCocktailEl.addEventListener('click', getCocktail);
 
 // refactoring information display function
 const infoCardGenerator = function(title, info, rating, img ) {
