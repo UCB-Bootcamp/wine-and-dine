@@ -50,7 +50,7 @@ const fetchData = (dataType, title) => {
 	
 };
 
-const getImageData = (title) => {
+const getImageData = (title, info) => {
 	const unsplashApiKey = 'EE_GhE32LBWp_v-xfq5aidZGEPP4n4j3IAzvCZ-cEGw';
 	const unsplashApiUrl = `https://api.unsplash.com/search/photos?client_id=${unsplashApiKey}&query=${title}`;
 	fetch(unsplashApiUrl).then(function(response){
@@ -69,9 +69,9 @@ const getWineData = (apiUrl, title) => {
 			//console.log(data);
 			const info = data.text;
 			// const wineImage = 
-			getImageData(title);
+			getImageData(title, info);
 			recipeCardGenerator();
-			//console.log(data.text);
+			console.log(data.text);
 		});
 	})
 };
@@ -131,7 +131,7 @@ const infoCardGenerator = function(title, info, img) {
 
 	// create description div and content
 	const descriptionDiv = document.createElement('div');
-	descriptionDiv.setAttribute("class", "col s6");
+	descriptionDiv.setAttribute("class", "col");
 	// append description
 	cardContentRow.append(descriptionDiv);
 
@@ -139,30 +139,13 @@ const infoCardGenerator = function(title, info, img) {
 	const descriptionTitle = document.createElement('h4');
 	descriptionDiv.append(descriptionTitle);
 
-	descriptionTitle.textContent = 'description';
+	descriptionTitle.textContent = 'Description';
 
 	// create description el
 	const descriptionContent = document.createElement('p');
 	descriptionDiv.append(descriptionContent);
 
 	descriptionContent.textContent = info;
-
-
-	// create rating div
-	const ratingDiv = document.createElement("div");
-	ratingDiv.setAttribute("class", "col s6");
-	cardContentRow.append(ratingDiv);
-	// create rating el
-	const ratingTitle = document.createElement('h4');
-	ratingDiv.append(ratingTitle);
-
-	ratingTitle.textContent = 'rating';
-
-	// create description el
-	const descriptionRating = document.createElement('p');
-	ratingDiv.append(descriptionRating);
-
-	descriptionRating.textContent = rating;
 
 	// append info card col to main
 	mainEl.appendChild(contentRow);
