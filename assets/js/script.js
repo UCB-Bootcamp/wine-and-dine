@@ -8,13 +8,10 @@ const headerEl = document.querySelector('#header');
 const foodSelectorEl = document.querySelector('#foodSelector');
 const randomPairingEl = document.querySelector('#randomPairing');
 const aboutUsEl = document.querySelector('#about-us');
+const apiKey = '2e045af459ca42fda601b67a39611082';
 
 const ourNames = ['Tim Weyel', 'Shy Gois', 'Leah Russell', 'Sydney Walcoff', 'Carlos Vadillo'];
 const ourTitles = ['Director of HTML', 'Data Courier', 'Github Cat Wrangler', 'Chief Mischief Officer (CMO)', 'Unpaid Intern'];
-
-// hardcoded examples
-let info = "I am a full bodied wine made with grapes. Has been fermenting since the days of old";
-let rating = '⭐️⭐️⭐️⭐️⭐️';
 
 //create a function to remove all html elements except the footer
 const removeExistingElems = () => {
@@ -28,27 +25,35 @@ const listenerHandler = el => {
 		const dataType = this.options[0].text.split(' ')[0];
 		console.log(title, dataType);
 		fetchData(dataType, title);
-		// fetch function dependent on `el`
 		removeExistingElems();
 		// these will go inside the fetch function because that's where we'll receive input for ratings, descr, and recipes
 		// infoCardGenerator(title, info, rating);
 		// recipeCardGenerator(firstProtein, secondProtein(if applicable),...n);
-		
 	});	
 };
 
 // fetch data
 const fetchData = (dataType, title) => {
-	const apiKey = '2e045af459ca42fda601b67a39611082';
 	if(dataType == 'Wine') {
 		const apiUrl = `https://api.spoonacular.com/food/wine/dishes?wine=${title}&apiKey=${apiKey}`;
 		getWineData(apiUrl, title);
+		getRecipePairings(title);
 	} else if(dataType == 'Food') {
-		const apiUrl = `https://api.spoonacular.com/recipes/complexSearch?query=${title}&number=3&apiKey=${apiKey}`
+		const apiUrl = `https://api.spoonacular.com/food/wine/pairing?food=${title}&apiKey=${apiKey}`
 		getFoodData(apiUrl, title);
+		getRecipePairings(title);
 	}
-	
 };
+
+const getRecipePairings = (title) => {
+	const recipeApiUrl = `https://api.spoonacular.com/recipes/complexSearch?query=${title}&number=3&apiKey=${apiKey}`
+	fetch(recipeApiUrl).then(function(response) {
+		response.json().then(function(data) {
+			console.log(response);
+			console.log(data);
+		})
+	})
+}
 
 const getImageData = (title, info) => {
 	const unsplashApiKey = 'EE_GhE32LBWp_v-xfq5aidZGEPP4n4j3IAzvCZ-cEGw';
@@ -60,26 +65,24 @@ const getImageData = (title, info) => {
 			infoCardGenerator(title, info, imgSrc);
 		})
 	})
-} 
+}
 
 // function fetching wine data
 const getWineData = (apiUrl, title) => {
 	fetch(apiUrl).then(function(response) {
 		response.json().then(function(data) {
-			//console.log(data);
 			const info = data.text;
-			// const wineImage = 
 			getImageData(title, info);
-			console.log(data.text);
 		});
 	})
 };
 
 // function fetching food data
-const getFoodData = apiUrl => {
+const getFoodData = (apiUrl, title) => {
 	fetch(apiUrl).then(function(response) {
 		response.json().then(function(data) {
-			console.log(data);
+			const pairingText = data.pairingText;
+			getImageData(title, pairingText);
 		});
 	})
 };
