@@ -37,18 +37,17 @@ const fetchData = (dataType, title) => {
 	if(dataType == 'Wine') {
 		const apiUrl = `https://api.spoonacular.com/food/wine/dishes?wine=${title}&apiKey=${apiKey}`;
 		getWineData(apiUrl, title);
-		getRecipePairings(title);
 	} else if(dataType == 'Food') {
 		const apiUrl = `https://api.spoonacular.com/food/wine/pairing?food=${title}&apiKey=${apiKey}`
 		getFoodData(apiUrl, title);
-		getRecipePairings(title);
 	}
 };
 
-const getRecipePairings = (title) => {
+const getPairingsData = (title) => {
 	const recipeApiUrl = `https://api.spoonacular.com/recipes/complexSearch?query=${title}&number=3&apiKey=${apiKey}`
 	fetch(recipeApiUrl).then(function(response) {
 		response.json().then(function(data) {
+			// need to get these 3 foods displayed on the collapisble/expandable recipe cards
 			console.log(response);
 			console.log(data);
 		})
@@ -71,7 +70,10 @@ const getImageData = (title, info) => {
 const getWineData = (apiUrl, title) => {
 	fetch(apiUrl).then(function(response) {
 		response.json().then(function(data) {
+			console.log(data);
 			const info = data.text;
+			const foodPairing = data.pairings[0];
+			getPairingsData(foodPairing);
 			getImageData(title, info);
 		});
 	})
@@ -81,7 +83,11 @@ const getWineData = (apiUrl, title) => {
 const getFoodData = (apiUrl, title) => {
 	fetch(apiUrl).then(function(response) {
 		response.json().then(function(data) {
+			console.log(data);
 			const pairingText = data.pairingText;
+			let pairedWines = data.pairedWines;
+			// need to get these 3 wines displayed on the collapisble/expandable recipe cards
+			console.log(pairedWines);
 			getImageData(title, pairingText);
 		});
 	})
