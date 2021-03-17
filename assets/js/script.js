@@ -24,14 +24,51 @@ const removeExistingElems = () => {
 
 const listenerHandler = el => {
 	el.addEventListener('change', function() {
-		var title = this.options[this.selectedIndex].text;
+		const title = this.options[this.selectedIndex].text;
+		const dataType = this.options[0].text.split(' ')[0];
+		console.log(title, dataType);
+		fetchData(dataType, title);
 		// fetch function dependent on `el`
 		removeExistingElems();
 		// these will go inside the fetch function because that's where we'll receive input for ratings, descr, and recipes
-		infoCardGenerator(title, info, rating);
-		recipeCardGenerator();
+		// infoCardGenerator(title, info, rating);
+		// recipeCardGenerator(firstProtein, secondProtein(if applicable),...n);
 		
 	});	
+};
+
+// fetch data
+const fetchData = (dataType, title) => {
+	const apiKey = '2e045af459ca42fda601b67a39611082';
+	if(dataType == 'Wine') {
+		const apiUrl = `https://api.spoonacular.com/food/wine/dishes?wine=${title}&apiKey=${apiKey}`;
+		getWineData(apiUrl);
+	} else if(dataType == 'Food') {
+		const apiUrl = `https://api.spoonacular.com/recipes/complexSearch?query=${title}&number=3&apiKey=${apiKey}`
+		getFoodData(apiUrl);
+	}
+	
+};
+
+// function fetching wine data
+const getWineData = apiUrl => {
+	fetch(apiUrl).then(function(response) {
+		response.json().then(function(data) {
+			const info = data.text;
+			infoCardGenerator('merlot', info);
+			recipeCardGenerator();
+			console.log(data.text);
+		});
+	})
+};
+
+// function fetching food data
+const getFoodData = apiUrl => {
+	fetch(apiUrl).then(function(response) {
+		response.json().then(function(data) {
+			console.log(data);
+		});
+	})
 };
 
 // refactoring information display function
