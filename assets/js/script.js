@@ -45,8 +45,9 @@ const getCocktail = function() {
 	drinkData = response.drinks;
 	drinkName = drinkData[0].strDrink;
 	drinkRecipe = drinkData[0].strInstructions;
+	drinkImage = drinkData[0].strDrinkThumb;
 	// calling the cocktail generating function
-	displayCocktail(drinkName, drinkRecipe);
+	displayCocktail(drinkName, drinkRecipe, drinkImage);
 
 	});
 };
@@ -63,11 +64,71 @@ const getCocktail = function() {
 // 	});
 // };
 
-const displayCocktail = function(drinkName, drinkRecipe) {
+const displayCocktail = function(drinkName, drinkRecipe, drinkImage) {
 	console.log(drinkName);
 	console.log(drinkRecipe);
+	console.log(drinkImage);
 	removeExistingElems();
 
+	// generating cocktail container 
+	const contentRow = document.createElement('div');
+	contentRow.setAttribute("class", "container row");
+	contentRow.setAttribute("id", "contentRow");
+
+	const cocktailHeader = document.createElement('div');
+	cocktailHeader.setAttribute("class", "col s12");
+	contentRow.append(cocktailHeader);
+
+	const cocktailGreet = document.createElement("h2");
+	cocktailGreet.textContent = 'Seems like you prefer a cocktail...';
+	cocktailGreet.className = 'center';
+	cocktailHeader.append(cocktailGreet);
+
+	const cocktailInfoRow = document.createElement('div');
+	cocktailInfoRow.setAttribute("class", "row");
+	contentRow.append(cocktailInfoRow);
+
+	const cocktailInfoCard = document.createElement('div');
+	cocktailInfoCard.setAttribute("class", "col s12");
+	contentRow.append(cocktailInfoCard);
+
+	const cocktailCardHz = document.createElement('div');
+	cocktailCardHz.setAttribute("class", "card horizontal");
+	contentRow.append(cocktailCardHz);
+
+	const cocktailImgDiv = document.createElement('div');
+	cocktailImgDiv.setAttribute("class", "card-image");
+	contentRow.append(cocktailImgDiv);
+
+	const cocktailImg = document.createElement('img');
+	cocktailImg.setAttribute("class", "materialboxed");
+	cocktailImg.setAttribute("width", "100%");
+	cocktailImg.setAttribute("src", drinkImage);
+	cocktailImgDiv.append(cocktailImg);
+
+	const cocktailTitle = document.createElement('span');
+	cocktailTitle.setAttribute("class", "card-title");
+	cocktailTitle.textContent = drinkName;
+	cocktailImgDiv.append(cocktailTitle);
+
+	const cocktailRecipeDiv = document.createElement('div');
+	cocktailRecipeDiv.setAttribute("class", "card-stacked");
+	contentRow.append(cocktailRecipeDiv);
+
+	const cocktailRecipe = document.createElement('div');
+	cocktailRecipe.setAttribute("class", "card-content");
+	cocktailRecipeDiv.append(cocktailRecipe);
+
+	const cocktailRecipeTitle = document.createElement("h4");
+	cocktailRecipeTitle.textContent = 'Instructions for making ' + drinkName;
+	cocktailRecipeDiv.append(cocktailRecipeTitle);
+
+	const cocktailInstructions = document.createElement("p");
+	cocktailInstructions.textContent = drinkRecipe;
+	cocktailRecipeDiv.append(cocktailInstructions);
+
+
+	mainEl.appendChild(contentRow);
 }
 
 wantCocktailEl.addEventListener('click', getCocktail);
