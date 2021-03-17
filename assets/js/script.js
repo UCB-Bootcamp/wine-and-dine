@@ -71,13 +71,15 @@ const displayCocktail = function(drinkName, drinkRecipe, drinkImage) {
 	removeExistingElems();
 
 	// generating cocktail container 
-	const contentRow = document.createElement('div');
-	contentRow.setAttribute("class", "container row");
-	contentRow.setAttribute("id", "contentRow");
+	const contentContainer = document.createElement('div');
+	contentContainer.setAttribute("class", "container");
+
+	const contentRowHeader = document.createElement('div');
+	contentRowHeader.setAttribute("class", "row");
 
 	const cocktailHeader = document.createElement('div');
 	cocktailHeader.setAttribute("class", "col s12");
-	contentRow.append(cocktailHeader);
+	contentRowHeader.append(cocktailHeader);
 
 	const cocktailGreet = document.createElement("h2");
 	cocktailGreet.textContent = 'Seems like you prefer a cocktail...';
@@ -86,19 +88,19 @@ const displayCocktail = function(drinkName, drinkRecipe, drinkImage) {
 
 	const cocktailInfoRow = document.createElement('div');
 	cocktailInfoRow.setAttribute("class", "row");
-	contentRow.append(cocktailInfoRow);
+	contentRowHeader.append(cocktailInfoRow);
 
 	const cocktailInfoCard = document.createElement('div');
 	cocktailInfoCard.setAttribute("class", "col s12");
-	contentRow.append(cocktailInfoCard);
+	cocktailInfoRow.append(cocktailInfoCard);
 
 	const cocktailCardHz = document.createElement('div');
 	cocktailCardHz.setAttribute("class", "card horizontal");
-	contentRow.append(cocktailCardHz);
+	cocktailInfoRow.append(cocktailCardHz);
 
 	const cocktailImgDiv = document.createElement('div');
 	cocktailImgDiv.setAttribute("class", "card-image");
-	contentRow.append(cocktailImgDiv);
+	cocktailInfoRow.append(cocktailImgDiv);
 
 	const cocktailImg = document.createElement('img');
 	cocktailImg.setAttribute("class", "materialboxed");
@@ -113,7 +115,7 @@ const displayCocktail = function(drinkName, drinkRecipe, drinkImage) {
 
 	const cocktailRecipeDiv = document.createElement('div');
 	cocktailRecipeDiv.setAttribute("class", "card-stacked");
-	contentRow.append(cocktailRecipeDiv);
+	cocktailInfoRow.append(cocktailRecipeDiv);
 
 	const cocktailRecipe = document.createElement('div');
 	cocktailRecipe.setAttribute("class", "card-content");
@@ -128,7 +130,7 @@ const displayCocktail = function(drinkName, drinkRecipe, drinkImage) {
 	cocktailRecipeDiv.append(cocktailInstructions);
 
 
-	mainEl.appendChild(contentRow);
+	mainEl.appendChild(contentRowHeader);
 }
 
 wantCocktailEl.addEventListener('click', getCocktail);
