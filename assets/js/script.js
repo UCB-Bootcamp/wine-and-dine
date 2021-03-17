@@ -70,7 +70,6 @@ const getWineData = (apiUrl, title) => {
 			const info = data.text;
 			// const wineImage = 
 			getImageData(title, info);
-			recipeCardGenerator();
 			console.log(data.text);
 		});
 	})
@@ -152,6 +151,8 @@ const infoCardGenerator = function(title, info, img) {
 	// append info card div to info card col
 	contentRow.append(infoCardDiv);
 	// append info card 
+
+	recipeCardGenerator();
 
 	// Call the collapsible function again when the element is rendered
 	$(document).ready(function(){
