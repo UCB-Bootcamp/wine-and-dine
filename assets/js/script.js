@@ -42,22 +42,36 @@ const fetchData = (dataType, title) => {
 	const apiKey = '2e045af459ca42fda601b67a39611082';
 	if(dataType == 'Wine') {
 		const apiUrl = `https://api.spoonacular.com/food/wine/dishes?wine=${title}&apiKey=${apiKey}`;
-		getWineData(apiUrl);
+		getWineData(apiUrl, title);
 	} else if(dataType == 'Food') {
 		const apiUrl = `https://api.spoonacular.com/recipes/complexSearch?query=${title}&number=3&apiKey=${apiKey}`
-		getFoodData(apiUrl);
+		getFoodData(apiUrl, title);
 	}
 	
 };
 
+const getImageData = (title) => {
+	const unsplashApiKey = 'EE_GhE32LBWp_v-xfq5aidZGEPP4n4j3IAzvCZ-cEGw';
+	const unsplashApiUrl = `https://api.unsplash.com/search/photos?client_id=${unsplashApiKey}&query=${title}`;
+	fetch(unsplashApiUrl).then(function(response){
+		response.json().then(function(data){
+			console.log(data.results[0].urls.raw);
+			let imgSrc = data.results[0].urls.raw;
+			infoCardGenerator(title, info, imgSrc);
+		})
+	})
+} 
+
 // function fetching wine data
-const getWineData = apiUrl => {
+const getWineData = (apiUrl, title) => {
 	fetch(apiUrl).then(function(response) {
 		response.json().then(function(data) {
+			//console.log(data);
 			const info = data.text;
-			infoCardGenerator('merlot', info);
+			// const wineImage = 
+			getImageData(title);
 			recipeCardGenerator();
-			console.log(data.text);
+			//console.log(data.text);
 		});
 	})
 };
@@ -72,7 +86,7 @@ const getFoodData = apiUrl => {
 };
 
 // refactoring information display function
-const infoCardGenerator = function(title, info, rating, img ) {
+const infoCardGenerator = function(title, info, img) {
 	// content row div
 	const contentRow = document.createElement('div');
 	contentRow.setAttribute("class", "container row");
@@ -92,7 +106,7 @@ const infoCardGenerator = function(title, info, rating, img ) {
 
 	// card image element
 	const cardImgEl = document.createElement('img');
-	cardImgEl.setAttribute("src", "./assets/images/sample-1.jpg");
+	cardImgEl.setAttribute("src", img);
 	// append image el to info card image div
 	cardImageDiv.append(cardImgEl);
 
