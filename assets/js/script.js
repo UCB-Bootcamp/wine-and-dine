@@ -51,11 +51,6 @@ const getCocktail = function() {
 	var drinkIngredients = [];
 	var ingredientAmt = [];
 
-	// Loop through the object and get the ingredients and the quantity
-	for (var i = 0; i < 15; i++) {
-		Things[i]
-	}
-
 	// calling the cocktail generating function
 	displayCocktail(drinkName, drinkRecipe, drinkImage);
 
