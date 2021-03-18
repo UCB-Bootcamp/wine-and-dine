@@ -70,67 +70,81 @@ const displayCocktail = function(drinkName, drinkRecipe, drinkImage) {
 	console.log(drinkImage);
 	removeExistingElems();
 
-	// generating cocktail container 
-	const contentContainer = document.createElement('div');
-	contentContainer.setAttribute("class", "container");
+	// Generating cocktail container 
+	const mainContainer = document.createElement('div');
+	mainContainer.setAttribute("class", "container");
 
-	const contentRowHeader = document.createElement('div');
-	contentRowHeader.setAttribute("class", "row");
+	// Insert the main row
+	const headerRow = document.createElement('div');
+	headerRow.setAttribute("class", "row");
+	mainContainer.append(headerRow);
 
-	const cocktailHeader = document.createElement('div');
-	cocktailHeader.setAttribute("class", "col s12");
-	contentRowHeader.append(cocktailHeader);
+	// Header Div
+	const cocktailHeaderDiv = document.createElement('div');
+	cocktailHeaderDiv.setAttribute("class", "col s12");
+	headerRow.append(cocktailHeaderDiv);
 
-	const cocktailGreet = document.createElement("h2");
-	cocktailGreet.textContent = 'Seems like you prefer a cocktail...';
-	cocktailGreet.className = 'center';
-	cocktailHeader.append(cocktailGreet);
+	// Cocktail Welcome Title Generator
+	const cocktailHeader = document.createElement("h2");
+	cocktailHeader.textContent = 'Seems like you prefer a cocktail...';
+	cocktailHeader.className = 'center';
+	cocktailHeaderDiv.append(cocktailHeader);
 
+	// Cokctail Info row
 	const cocktailInfoRow = document.createElement('div');
 	cocktailInfoRow.setAttribute("class", "row");
-	contentRowHeader.append(cocktailInfoRow);
+	mainContainer.append(cocktailInfoRow);
 
+	// Cocktail Column
 	const cocktailInfoCard = document.createElement('div');
 	cocktailInfoCard.setAttribute("class", "col s12");
 	cocktailInfoRow.append(cocktailInfoCard);
 
+	// Horizontal Card Creation
 	const cocktailCardHz = document.createElement('div');
 	cocktailCardHz.setAttribute("class", "card horizontal");
-	cocktailInfoRow.append(cocktailCardHz);
+	cocktailInfoCard.append(cocktailCardHz);
 
+	// Image div Goes First
 	const cocktailImgDiv = document.createElement('div');
 	cocktailImgDiv.setAttribute("class", "card-image");
-	cocktailInfoRow.append(cocktailImgDiv);
+	cocktailCardHz.append(cocktailImgDiv);
 
+	// Pass through the image
 	const cocktailImg = document.createElement('img');
 	cocktailImg.setAttribute("class", "materialboxed");
 	cocktailImg.setAttribute("width", "100%");
 	cocktailImg.setAttribute("src", drinkImage);
 	cocktailImgDiv.append(cocktailImg);
 
+	// Pass through the cocktail name
 	const cocktailTitle = document.createElement('span');
 	cocktailTitle.setAttribute("class", "card-title");
 	cocktailTitle.textContent = drinkName;
 	cocktailImgDiv.append(cocktailTitle);
 
+	// Create Recipe Card div
 	const cocktailRecipeDiv = document.createElement('div');
 	cocktailRecipeDiv.setAttribute("class", "card-stacked");
-	cocktailInfoRow.append(cocktailRecipeDiv);
+	cocktailCardHz.append(cocktailRecipeDiv);
 
+	// Generate the Card Content div
 	const cocktailRecipe = document.createElement('div');
 	cocktailRecipe.setAttribute("class", "card-content");
 	cocktailRecipeDiv.append(cocktailRecipe);
 
+	// Pass Through the Cocktail Name
 	const cocktailRecipeTitle = document.createElement("h4");
-	cocktailRecipeTitle.textContent = 'Instructions for making ' + drinkName;
-	cocktailRecipeDiv.append(cocktailRecipeTitle);
+	cocktailRecipeTitle.textContent = `Instructions for making the ${drinkName}:`;
+	cocktailRecipe.append(cocktailRecipeTitle);
 
+	// Pass through the recipe instructions
 	const cocktailInstructions = document.createElement("p");
 	cocktailInstructions.textContent = drinkRecipe;
-	cocktailRecipeDiv.append(cocktailInstructions);
+	cocktailRecipe.append(cocktailInstructions);
 
 
-	mainEl.appendChild(contentRowHeader);
+	mainEl.appendChild(mainContainer);
 }
 
 wantCocktailEl.addEventListener('click', getCocktail);
