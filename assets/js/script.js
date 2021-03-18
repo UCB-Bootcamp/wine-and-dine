@@ -41,38 +41,30 @@ const listenerHandler = el => {
 
 const getCocktail = function() {
 	fetch(cocktailApi).then(res => res.json()).then(function(response){
+	
+	// Create two arrays to hold the Object and the Object Contents
 	var drinkData = [];
+	var drinkDataContents = [];
+
+	// Get the key variables
 	drinkData = response.drinks;
 	drinkName = drinkData[0].strDrink;
 	drinkRecipe = drinkData[0].strInstructions;
 	drinkImage = drinkData[0].strDrinkThumb;
 
-	// Initialize the ingredients & amount array
-	var drinkIngredients = [];
-	var ingredientAmt = [];
+	// Separate the ingredients and measurements for the drinks
+	drinkDataContents = Object.values(drinkData[0]);
 
 	// calling the cocktail generating function
-	displayCocktail(drinkName, drinkRecipe, drinkImage);
+	displayCocktail(drinkName, drinkRecipe, drinkImage, drinkDataContents);
 
 	});
 };
-// Test code from Manny either option works
-// const getCocktail = function() {
-// 	fetch(cocktailApi).then(function(response){
-// 		if (response.ok) {
-			
-// 			response.json().then(response => {
-// 				console.log(response);
-// 			})
-		
-// 		};
-// 	});
-// };
 
-const displayCocktail = function(drinkName, drinkRecipe, drinkImage) {
-	console.log(drinkName);
-	console.log(drinkRecipe);
-	console.log(drinkImage);
+// Displaying the cocktails in it's own card
+const displayCocktail = function(drinkName, drinkRecipe, drinkImage, drinkDataContents) {
+
+	// Clear existing elements
 	removeExistingElems();
 
 	// Generating cocktail container 
@@ -140,13 +132,65 @@ const displayCocktail = function(drinkName, drinkRecipe, drinkImage) {
 
 	// Pass Through the Cocktail Name
 	const cocktailRecipeTitle = document.createElement("h4");
-	cocktailRecipeTitle.textContent = `Instructions for making the ${drinkName}:`;
+	cocktailRecipeTitle.textContent = `Making the ${drinkName}:`;
 	cocktailRecipe.append(cocktailRecipeTitle);
 
 	// Pass through the recipe instructions
 	const cocktailInstructions = document.createElement("p");
 	cocktailInstructions.textContent = drinkRecipe;
 	cocktailRecipe.append(cocktailInstructions);
+
+	// Create the Ingredients & Measaurements Row
+	const cocktailIngredientDiv = document.createElement('div');
+	cocktailIngredientDiv.setAttribute("class", "row");
+	cocktailRecipe.append(cocktailIngredientDiv);
+
+	// Ingredients column
+	const cocktailIngredientCol = document.createElement('div');
+	cocktailIngredientCol.setAttribute("class", "col s12 m6");
+	cocktailIngredientDiv.append(cocktailIngredientCol);
+
+	// Ingredients Title
+	const cocktailIngredientTitle = document.createElement("h5");
+	cocktailIngredientTitle.textContent = "Ingredients";
+	cocktailIngredientCol.append(cocktailIngredientTitle);
+
+	// Measurements Column
+	const cocktailMeasureCol = document.createElement('div');
+	cocktailMeasureCol.setAttribute("class", "col s12 m6");
+	cocktailIngredientDiv.append(cocktailMeasureCol);
+
+	// Measurements Title
+	const cocktailMeasureTitle = document.createElement("h5");
+	cocktailMeasureTitle.textContent = "Measurements";
+	cocktailMeasureCol.append(cocktailMeasureTitle);
+
+	// Ingredients List
+	const cocktailIngredientList = document.createElement('ul');
+	cocktailIngredientCol.append(cocktailIngredientList);
+
+	// Ingredient Measurement List
+	const cocktailMeasureList = document.createElement('ul');
+	cocktailMeasureCol.append(cocktailMeasureList);
+
+	// Ingredient Names Loop
+	for (var i = 17; i < 32; i++) {
+		if (drinkDataContents[i]) {
+			var ingredientList = document.createElement('li');
+			ingredientList.textContent = drinkDataContents[i];
+			cocktailIngredientList.append(ingredientList);
+		}
+	}
+
+	// Ingredient Measurements Loop
+	for (var i = 32; i < 47; i++) {
+		if (drinkDataContents[i]) {
+			var measurementList = document.createElement('li');
+			measurementList.textContent = drinkDataContents[i];
+			cocktailMeasureList.append(measurementList);
+		}
+	}
+
 
 	mainEl.appendChild(mainContainer);
 }
