@@ -76,7 +76,6 @@ const displayCocktail = function(drinkName, drinkRecipe, drinkImage, drinkDataCo
 
 	// Generating cocktail container 
 	const mainContainer = document.createElement('div');
-	mainContainer.setAttribute("class", "container");
 
 	// Insert the main row
 	const headerRow = document.createElement('div');

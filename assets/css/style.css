@@ -66,7 +66,6 @@ html {
 .header-secondary {
 	font-size: .6em;
 	color: white;
-	letter-spacing: 1em;
   }
   .header-terciary {
 	  font-size: .4em;
@@ -76,18 +75,13 @@ html {
   .header-terciary a {
 	  color: #c1c1c1;
 	  text-decoration: none;
-	  border: 1px solid #c1c1c1;
 	  padding: 10px;
 	  text-align: center;
-  }
-  .header-terciary a:hover {
-	  color: white;
-	  border: 1px solid white;
-	  padding: 10px;
+	  letter-spacing: 0px;
   }
 
 #main {
-	height: 90vh;
+	min-height: 90vh;
 }
 .main-heading {
 	text-align: center;
@@ -111,16 +105,15 @@ html {
     flex: 1 0 auto;
   }
 
-  .footer-links {
-	  display: inline;
+  .copyright {
+	  margin-bottom: 10px;
+  }
+
+  .footer-link .wine-cocktail {
+	margin: 5px;
   }
 
 
-  #links-in-footer {
-	  display: flex;
-	  justify-content: space-between;
-	  margin: 0 150px;
-  }
 
 
   
