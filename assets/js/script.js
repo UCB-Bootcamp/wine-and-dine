@@ -224,23 +224,19 @@ const recipeCardGenerator = (recipe1, recipe2, recipe3) => {
 	}
 	// append recipeCard container div to contentrow in main
 	$("#contentRow").append(recipeCardDiv);
-
-	// add event listeners
-
-
 };
 
+const surpriseMeData = () => {
+	removeExistingElems();
 
-//create something to display the 3 options to the right
+	const wines = ["Sauvignon Blanc", "Chardonnay", "Champagne", "Pinot Noir", "Merlot", "Shiraz", "Cabernet Sauvignon", "Malbec", "Sangiovese"];
+	const randomWineEl = Math.floor(Math.random() * wines.length);
+	const surpriseMeWine = wines[randomWineEl];
+	console.log(surpriseMeWine);
+	fetchData('Wine', surpriseMeWine);
+};
 
-listenerHandler(wineSelectorEl);
-listenerHandler(foodSelectorEl);
-listenerHandler(randomPairingEl);
-
-
-// clicking about us link
-aboutUsEl.addEventListener('click', function() {
-	// remove header and main elements (keeping the footer)
+const aboutUs = () => {
 	removeExistingElems();
 
 	const aboutUsHeader = document.createElement("h2");
@@ -271,4 +267,12 @@ aboutUsEl.addEventListener('click', function() {
 
 	  cardHolderRow.appendChild(aboutUsCard);
 	}
-});
+};
+
+listenerHandler(wineSelectorEl);
+listenerHandler(foodSelectorEl);
+randomPairingEl.addEventListener('click', surpriseMeData);
+
+
+// clicking about us link
+aboutUsEl.addEventListener('click', aboutUs);
