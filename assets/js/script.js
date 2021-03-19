@@ -193,6 +193,22 @@ const displayCocktail = function(drinkName, drinkRecipe, drinkImage, drinkDataCo
 
 
 	mainEl.appendChild(mainContainer);
+
+	// Initialize the picture max
+	$(document).ready(function(){
+    $('.materialboxed').materialbox();
+    });
+
+	// Makes it a normal card on smaller and horizontal card on larger
+    $(window).resize(function(){
+
+		if($(window).width() <= 767){
+		$('.horizontal').removeClass('horizontal');
+		}
+		if(767 <= $(window).width()){
+			$('.card').addClass('horizontal');
+		}
+    });
 }
 
 wantCocktailEl.addEventListener('click', getCocktail);
