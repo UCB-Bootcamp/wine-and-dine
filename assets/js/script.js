@@ -72,7 +72,7 @@ const getCocktail = function() {
 const displayCocktail = function(drinkName, drinkRecipe, drinkImage, drinkDataContents) {
 
 	// Clear existing elements
-	removeExistingElems();
+	removeEl();
 
 	// Generating cocktail container 
 	const mainContainer = document.createElement('div');
@@ -199,7 +199,7 @@ const displayCocktail = function(drinkName, drinkRecipe, drinkImage, drinkDataCo
 	}
 
 
-	mainEl.appendChild(mainContainer);
+	contentRow.appendChild(mainContainer);
 
 	// Initialize the picture max
 	$(document).ready(function(){
