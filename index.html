@@ -5,7 +5,7 @@
         <meta charset="utf-8">
 
         <!-- NEED TO HOLD THIS FOR NOW -->
-        <title>PLACEHOLDER</title>
+        <title>Wine and Dine</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -16,6 +16,7 @@
 
         <link rel="manifest" href="site.webmanifest">
         <link rel="apple-touch-icon" href="icon.png">
+        <link rel="shortcut icon" type="image/jpg" href="./assets/images/grape-logo.png"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <!-- Place favicon.ico in the root directory -->
 
@@ -45,7 +46,7 @@
 
         <!-- MAIN START -->
         <main id="main">
-            <div class="container">
+            <div class="container" id="contentRow">
                 <div class="row">
                     <h1 class="main-heading col s12">
                         I Want To Pair...
@@ -58,16 +59,15 @@
                         <div class="input-field col s12">
                             <select id="wineSelector">
                                 <option value="" disabled selected>Wine With Food</option>
-                                <option value="Sauvignon Blanc">Sauvingon Blanc</option>
+                                <option value="Sauvignon Blanc">Sauvignon Blanc</option>
                                 <option value="Chardonnay">Chardonnay</option>
                                 <option value="Champagne">Champagne</option>
                                 <option value="Pinot Noir">Pinot Noir</option>
                                 <option value="Merlot">Merlot</option>
-                                <option value="Zinfandel">Zinfandel</option>
+                                <option value="Shiraz">Shiraz</option>
                                 <option value="Cabernet Sauvignon">Cabernet Sauvignon</option>
-                                <option value="8">Option 8</option>
-                                <option value="9">Option 9</option>
-
+                                <option value="Malbec">Malbec</option>
+                                <option value="Sangiovese">Sangiovese</option>
                             </select>
                             <label>Select a Wine</label>
                         </div>
@@ -76,15 +76,13 @@
                         <div class="input-field col s12">
                             <select id="foodSelector">
                                 <option value="" disabled selected>Food With Wine</option>
-                                <option value="1">Option 1</option>
-                                <option value="2">Option 2</option>
-                                <option value="3">Option 3</option>
-                                <option value="4">Option 4</option>
-                                <option value="5">Option 5</option>
-                                <option value="6">Option 6</option>
-                                <option value="7">Option 7</option>
-                                <option value="8">Option 8</option>
-                                <option value="9">Option 9</option>
+                                <option value="Chicken">Chicken</option>
+                                <option value="Beef">Beef</option>
+                                <option value="Turkey">Turkey</option>
+                                <option value="Seafood">Seafood</option>
+                                <option value="Fish">Fish</option>
+                                <option value="Tofu">Tofu</option>
+                                <option value="Mushrooms">Mushrooms</option>
                             </select>
                             <label>Select a Protein</label>
                         </div>
@@ -119,7 +117,7 @@
                         </ul>
                         </div>
                         <div class="col s12 m4 l2">
-                    <a class="grey-text text-lighten-4 right" href="#!">  <i class="small material-icons">local_bar</i> <i class="small material-icons">wine_bar</i></a>
+                    <a class="grey-text text-lighten-4 right" href="#!">  <i class="small material-icons" id="want-cocktail">local_bar</i> <i class="small material-icons">wine_bar</i></a>
                 </div>
                 </div>
             </div>
@@ -143,3 +141,4 @@
     </body>
 
 </html>
+
