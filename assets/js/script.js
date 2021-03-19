@@ -235,17 +235,17 @@ const recipeCardGenerator = (recipeTitle, recipeSummary) => {
 	recipeUl.append(recipeLi);
 };
 
+const surpriseMeData = () => {
+	removeEl();
 
-//create something to display the 3 options to the right
+	const wines = ["Sauvignon Blanc", "Chardonnay", "Champagne", "Pinot Noir", "Merlot", "Shiraz", "Cabernet Sauvignon", "Malbec", "Sangiovese"];
+	const randomWineEl = Math.floor(Math.random() * wines.length);
+	const surpriseMeWine = wines[randomWineEl];
+	console.log(surpriseMeWine);
+	validateDropdownType('Wine', surpriseMeWine);
+};
 
-listenerHandler(wineSelectorEl);
-listenerHandler(foodSelectorEl);
-listenerHandler(randomPairingEl);
-
-
-// clicking about us link
-aboutUsEl.addEventListener('click', function() {
-	// remove header and main elements (keeping the footer)
+const aboutUs = () => {
 	removeEl();
 
 	const aboutUsHeader = document.createElement("h2");
@@ -276,8 +276,7 @@ aboutUsEl.addEventListener('click', function() {
 
 	  cardHolderRow.appendChild(aboutUsCard);
 	}
-});
-
+};
 
 /* Wine with Food perspective
 
@@ -286,5 +285,13 @@ for loop
 - recipeFetch(foodPairings[i])
 - input recipe info into for loop creating recipe cards
 
-
 */
+
+
+listenerHandler(wineSelectorEl);
+listenerHandler(foodSelectorEl);
+randomPairingEl.addEventListener('click', surpriseMeData);
+
+
+// clicking about us link
+aboutUsEl.addEventListener('click', aboutUs);
