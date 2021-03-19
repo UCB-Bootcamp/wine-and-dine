@@ -12,7 +12,9 @@ const foodSelectorEl = document.querySelector('#foodSelector');
 const randomPairingEl = document.querySelector('#randomPairing');
 const aboutUsEl = document.querySelector('#about-us');
 const wantCocktailEl = document.querySelector('#want-cocktail');
-const apiKey = '2e045af459ca42fda601b67a39611082';
+// const apiKey = '2e045af459ca42fda601b67a39611082';
+const apiKey = '97a4448b41f44c18bd70423cbfd292bb';
+// const apiKey = 'f9e4f37f62de4dba85137360011a63c2';
 
 const ourNames = ['Tim Weyel', 'Shy Gois', 'Leah Russell', 'Sydney Walcoff', 'Carlos Vadillo'];
 const ourTitles = ['Director of HTML', 'Data Courier', 'Github Cat Wrangler', 'Chief Mischief Officer (CMO)', 'Unpaid Intern'];
@@ -40,9 +42,6 @@ const listenerHandler = el => {
 		validateDropdownType(dataType, selectedOption);
 		removeEl();
 		contentRow.setAttribute("class", "container row");
-		// these will go inside the fetch function because that's where we'll receive input for ratings, descr, and recipes
-		// infoCardGenerator(selectedOption, info, rating);
-		// recipeCardGenerator(firstProtein, secondProtein(if applicable),...n);
 	});	
 };
 
@@ -230,7 +229,7 @@ const validateDropdownType = (dataType, selectedOption) => {
 	}
 };
 
-const getPairingsData = (searchQuery) => {
+const getPairingsData = searchQuery => {
 	const pairingsApiUrl = `https://api.spoonacular.com/recipes/complexSearch?query=${searchQuery}&number=3&apiKey=${apiKey}`;
 	fetch(pairingsApiUrl).then(function(response) {
 		response.json().then(function(data) {
@@ -242,7 +241,7 @@ const getPairingsData = (searchQuery) => {
 	})
 };
 
-const getPairingsRecipes = (recipeId) => {
+const getPairingsRecipes = recipeId => {
 	const recipesApiUrl = `https://api.spoonacular.com/recipes/${recipeId}/information?includeNutrition=false&apiKey=${apiKey}`;
 	fetch(recipesApiUrl).then(function(response) {
 		response.json().then(function(data) {
@@ -401,7 +400,11 @@ const recipeCardGenerator = (recipeTitle, recipeSummary) => {
 	likeButton.textContent = 'favorite_border';
 	likeButtonDiv.append(likeButton);
 	likeButton.addEventListener("click", function() {
-		likeButton.textContent = 'favorite';
+		if(likeButton.textContent === 'favorite') {
+			likeButton.textContent = 'favorite_border';
+		} else {
+			likeButton.textContent = 'favorite';
+		}
 	})
 
 	// append everything
