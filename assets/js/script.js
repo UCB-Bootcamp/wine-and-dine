@@ -256,8 +256,8 @@ const aboutUs = () => {
 	const aboutUsBody = document.createElement("div");
 	aboutUsBody.innerHTML = `<div class="row center" id="card-holder-row"></div>`
 
-	mainEl.appendChild(aboutUsHeader);
-	mainEl.appendChild(aboutUsBody);
+	contentRow.appendChild(aboutUsHeader);
+	contentRow.appendChild(aboutUsBody);
 
 	for (var i = 0; i < ourNames.length; i++) {
 		const cardHolderRow = document.querySelector('#card-holder-row');
