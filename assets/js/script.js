@@ -19,8 +19,7 @@ const removeEl = () => {
 	contentRow.innerHTML = '';
 };
 
-const pageConstructor = () => {
-	contentRow.setAttribute("class", "container row");
+const recipePageConstructor = () => {
 	const recipeCardDiv = document.createElement("div");
 	const recipeUl = document.createElement("ul");
 	recipeUl.setAttribute("class", "collapsible");
@@ -36,7 +35,7 @@ const listenerHandler = el => {
 		const dataType = this.options[0].text.split(' ')[0];
 		validateDropdownType(dataType, selectedOption);
 		removeEl();
-		pageConstructor();
+		contentRow.setAttribute("class", "container row");
 		// these will go inside the fetch function because that's where we'll receive input for ratings, descr, and recipes
 		// infoCardGenerator(selectedOption, info, rating);
 		// recipeCardGenerator(firstProtein, secondProtein(if applicable),...n);
@@ -183,6 +182,8 @@ const infoCardGenerator = function(selectedOption, info, img) {
 	$(document).ready(function(){
 		$('.collapsible').collapsible();
 	});
+	
+	recipePageConstructor();
 };
 
 const recipeCardGenerator = (recipeTitle, recipeSummary) => {
