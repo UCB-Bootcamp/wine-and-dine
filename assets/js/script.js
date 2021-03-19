@@ -23,6 +23,7 @@ const recipePageConstructor = () => {
 	const recipeCardDiv = document.createElement("div");
 	const recipeUl = document.createElement("ul");
 	recipeUl.setAttribute("class", "collapsible");
+	recipeUl.setAttribute("id", "recipeUl");
 	recipeCardDiv.classList.add("col", "s12", "m7");
 	recipeCardDiv.append(recipeUl);
 	contentRow.append(recipeCardDiv);
@@ -230,7 +231,7 @@ const recipeCardGenerator = (recipeTitle, recipeSummary) => {
 
 	// append everything
 	recipeLi.append(recipeHeaderDiv, recipeBodyDiv);
-	let recipeUl = $('ul');
+	let recipeUl = $('#recipeUl');
 	recipeUl.append(recipeLi);
 };
 
