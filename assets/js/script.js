@@ -1,6 +1,9 @@
 // Materialize Initiation script
 M.AutoInit();
 
+// API VARIABLES GO HERE
+const cocktailApi = "https://www.thecocktaildb.com/api/json/v1/1/random.php"
+
 // DOM VARIABLES GO HERE
 const wineSelectorEl = document.querySelector('#wineSelector'); 
 const contentRow = document.querySelector('#contentRow');
@@ -8,6 +11,7 @@ const headerEl = document.querySelector('#header');
 const foodSelectorEl = document.querySelector('#foodSelector');
 const randomPairingEl = document.querySelector('#randomPairing');
 const aboutUsEl = document.querySelector('#about-us');
+const wantCocktailEl = document.querySelector('#want-cocktail');
 const apiKey = 'f9e4f37f62de4dba85137360011a63c2';
 
 const ourNames = ['Tim Weyel', 'Shy Gois', 'Leah Russell', 'Sydney Walcoff', 'Carlos Vadillo'];
@@ -29,7 +33,6 @@ const recipePageConstructor = () => {
 	contentRow.append(recipeCardDiv);
 };
 
-
 const listenerHandler = el => {
 	el.addEventListener('change', function() {
 		const selectedOption = this.options[this.selectedIndex].text;
@@ -43,6 +46,179 @@ const listenerHandler = el => {
 	});	
 };
 
+const getCocktail = function() {
+	fetch(cocktailApi).then(res => res.json()).then(function(response){
+	
+	// Create two arrays to hold the Object and the Object Contents
+	var drinkData = [];
+	var drinkDataContents = [];
+
+	// Get the key variables
+	drinkData = response.drinks;
+	drinkName = drinkData[0].strDrink;
+	drinkRecipe = drinkData[0].strInstructions;
+	drinkImage = drinkData[0].strDrinkThumb;
+
+	// Separate the ingredients and measurements for the drinks
+	drinkDataContents = Object.values(drinkData[0]);
+
+	// calling the cocktail generating function
+	displayCocktail(drinkName, drinkRecipe, drinkImage, drinkDataContents);
+
+	});
+};
+
+// Displaying the cocktails in it's own card
+const displayCocktail = function(drinkName, drinkRecipe, drinkImage, drinkDataContents) {
+
+	// Clear existing elements
+	removeExistingElems();
+
+	// Generating cocktail container 
+	const mainContainer = document.createElement('div');
+	mainContainer.setAttribute("class", "container");
+
+	// Insert the main row
+	const headerRow = document.createElement('div');
+	headerRow.setAttribute("class", "row");
+	mainContainer.append(headerRow);
+
+	// Header Div
+	const cocktailHeaderDiv = document.createElement('div');
+	cocktailHeaderDiv.setAttribute("class", "col s12");
+	headerRow.append(cocktailHeaderDiv);
+
+	// Cocktail Welcome Title Generator
+	const cocktailHeader = document.createElement("h2");
+	cocktailHeader.textContent = 'Seems like you prefer a cocktail...';
+	cocktailHeader.className = 'center';
+	cocktailHeaderDiv.append(cocktailHeader);
+
+	// Cokctail Info row
+	const cocktailInfoRow = document.createElement('div');
+	cocktailInfoRow.setAttribute("class", "row");
+	mainContainer.append(cocktailInfoRow);
+
+	// Cocktail Column
+	const cocktailInfoCard = document.createElement('div');
+	cocktailInfoCard.setAttribute("class", "col s12");
+	cocktailInfoRow.append(cocktailInfoCard);
+
+	// Horizontal Card Creation
+	const cocktailCardHz = document.createElement('div');
+	cocktailCardHz.setAttribute("class", "card horizontal");
+	cocktailInfoCard.append(cocktailCardHz);
+
+	// Image div Goes First
+	const cocktailImgDiv = document.createElement('div');
+	cocktailImgDiv.setAttribute("class", "card-image");
+	cocktailCardHz.append(cocktailImgDiv);
+
+	// Pass through the image
+	const cocktailImg = document.createElement('img');
+	cocktailImg.setAttribute("class", "materialboxed");
+	cocktailImg.setAttribute("width", "100%");
+	cocktailImg.setAttribute("src", drinkImage);
+	cocktailImgDiv.append(cocktailImg);
+
+	// Pass through the cocktail name
+	const cocktailTitle = document.createElement('span');
+	cocktailTitle.setAttribute("class", "card-title");
+	cocktailTitle.textContent = drinkName;
+	cocktailImgDiv.append(cocktailTitle);
+
+	// Create Recipe Card div
+	const cocktailRecipeDiv = document.createElement('div');
+	cocktailRecipeDiv.setAttribute("class", "card-stacked");
+	cocktailCardHz.append(cocktailRecipeDiv);
+
+	// Generate the Card Content div
+	const cocktailRecipe = document.createElement('div');
+	cocktailRecipe.setAttribute("class", "card-content");
+	cocktailRecipeDiv.append(cocktailRecipe);
+
+	// Pass Through the Cocktail Name
+	const cocktailRecipeTitle = document.createElement("h4");
+	cocktailRecipeTitle.textContent = `Making the ${drinkName}:`;
+	cocktailRecipe.append(cocktailRecipeTitle);
+
+	// Pass through the recipe instructions
+	const cocktailInstructions = document.createElement("p");
+	cocktailInstructions.textContent = drinkRecipe;
+	cocktailRecipe.append(cocktailInstructions);
+
+	// Create the Ingredients & Measaurements Row
+	const cocktailIngredientDiv = document.createElement('div');
+	cocktailIngredientDiv.setAttribute("class", "row");
+	cocktailRecipe.append(cocktailIngredientDiv);
+
+	// Ingredients column
+	const cocktailIngredientCol = document.createElement('div');
+	cocktailIngredientCol.setAttribute("class", "col s12 m6");
+	cocktailIngredientDiv.append(cocktailIngredientCol);
+
+	// Ingredients Title
+	const cocktailIngredientTitle = document.createElement("h5");
+	cocktailIngredientTitle.textContent = "Ingredients";
+	cocktailIngredientCol.append(cocktailIngredientTitle);
+
+	// Measurements Column
+	const cocktailMeasureCol = document.createElement('div');
+	cocktailMeasureCol.setAttribute("class", "col s12 m6");
+	cocktailIngredientDiv.append(cocktailMeasureCol);
+
+	// Measurements Title
+	const cocktailMeasureTitle = document.createElement("h5");
+	cocktailMeasureTitle.textContent = "Measurements";
+	cocktailMeasureCol.append(cocktailMeasureTitle);
+
+	// Ingredients List
+	const cocktailIngredientList = document.createElement('ul');
+	cocktailIngredientCol.append(cocktailIngredientList);
+
+	// Ingredient Measurement List
+	const cocktailMeasureList = document.createElement('ul');
+	cocktailMeasureCol.append(cocktailMeasureList);
+
+	// Ingredient Names Loop
+	for (var i = 17; i < 32; i++) {
+		if (drinkDataContents[i]) {
+			var ingredientList = document.createElement('li');
+			ingredientList.textContent = drinkDataContents[i];
+			cocktailIngredientList.append(ingredientList);
+		}
+	}
+
+	// Ingredient Measurements Loop
+	for (var i = 32; i < 47; i++) {
+		if (drinkDataContents[i]) {
+			var measurementList = document.createElement('li');
+			measurementList.textContent = drinkDataContents[i];
+			cocktailMeasureList.append(measurementList);
+		}
+	}
+
+
+	mainEl.appendChild(mainContainer);
+
+	// Initialize the picture max
+	$(document).ready(function(){
+    $('.materialboxed').materialbox();
+    });
+
+	// Makes it a normal card on smaller and horizontal card on larger
+    $(window).resize(function(){
+
+		if($(window).width() <= 860){
+		$('.horizontal').removeClass('horizontal');
+		}
+		if(860 <= $(window).width()){
+			$('.card').addClass('horizontal');
+		}
+    });
+};
+
+wantCocktailEl.addEventListener('click', getCocktail);
 // fetch data
 const validateDropdownType = (dataType, selectedOption) => {
 	if(dataType == 'Wine') {
@@ -76,7 +252,6 @@ const getPairingsRecipes = (recipeId) => {
 		})
 	});
 };
-
 
 const getImageData = (selectedOption, info) => {
 	const unsplashApiKey = 'EE_GhE32LBWp_v-xfq5aidZGEPP4n4j3IAzvCZ-cEGw';
