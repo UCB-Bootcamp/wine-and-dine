@@ -6,38 +6,45 @@ const cocktailApi = "https://www.thecocktaildb.com/api/json/v1/1/random.php"
 
 // DOM VARIABLES GO HERE
 const wineSelectorEl = document.querySelector('#wineSelector'); 
-const mainEl = document.querySelector('#main');
+const contentRow = document.querySelector('#contentRow');
 const headerEl = document.querySelector('#header');
 const foodSelectorEl = document.querySelector('#foodSelector');
 const randomPairingEl = document.querySelector('#randomPairing');
 const aboutUsEl = document.querySelector('#about-us');
 const wantCocktailEl = document.querySelector('#want-cocktail');
+const apiKey = 'f9e4f37f62de4dba85137360011a63c2';
 
 const ourNames = ['Tim Weyel', 'Shy Gois', 'Leah Russell', 'Sydney Walcoff', 'Carlos Vadillo'];
 const ourTitles = ['Director of HTML', 'Data Courier', 'Github Cat Wrangler', 'Chief Mischief Officer (CMO)', 'Unpaid Intern'];
 
-// hardcoded examples
-let info = "I am a full bodied wine made with grapes. Has been fermenting since the days of old";
-let rating = '⭐️⭐️⭐️⭐️⭐️';
-
 //create a function to remove all html elements except the footer
-const removeExistingElems = () => {
+const removeEl = () => {
 	headerEl.innerHTML = '';
-	mainEl.innerHTML = '';
+	contentRow.innerHTML = '';
+};
+
+const recipePageConstructor = () => {
+	const recipeCardDiv = document.createElement("div");
+	const recipeUl = document.createElement("ul");
+	recipeUl.setAttribute("class", "collapsible");
+	recipeUl.setAttribute("id", "recipeUl");
+	recipeCardDiv.classList.add("col", "s12", "m7");
+	recipeCardDiv.append(recipeUl);
+	contentRow.append(recipeCardDiv);
 };
 
 const listenerHandler = el => {
 	el.addEventListener('change', function() {
-		var title = this.options[this.selectedIndex].text;
-		// fetch function dependent on `el`
-		removeExistingElems();
+		const selectedOption = this.options[this.selectedIndex].text;
+		const dataType = this.options[0].text.split(' ')[0];
+		validateDropdownType(dataType, selectedOption);
+		removeEl();
+		contentRow.setAttribute("class", "container row");
 		// these will go inside the fetch function because that's where we'll receive input for ratings, descr, and recipes
-		infoCardGenerator(title, info, rating);
-		recipeCardGenerator();
-		
+		// infoCardGenerator(selectedOption, info, rating);
+		// recipeCardGenerator(firstProtein, secondProtein(if applicable),...n);
 	});	
 };
-
 
 const getCocktail = function() {
 	fetch(cocktailApi).then(res => res.json()).then(function(response){
@@ -209,17 +216,86 @@ const displayCocktail = function(drinkName, drinkRecipe, drinkImage, drinkDataCo
 			$('.card').addClass('horizontal');
 		}
     });
-}
+};
 
 wantCocktailEl.addEventListener('click', getCocktail);
+// fetch data
+const validateDropdownType = (dataType, selectedOption) => {
+	if(dataType == 'Wine') {
+		const wineApiUrl = `https://api.spoonacular.com/food/wine/dishes?wine=${selectedOption}&apiKey=${apiKey}`;
+		getWineData(wineApiUrl, selectedOption);
+	} else if(dataType == 'Food') {
+		const foodApiUrl = `https://api.spoonacular.com/food/wine/pairing?food=${selectedOption}&apiKey=${apiKey}`;
+		getFoodWithWineData(foodApiUrl, selectedOption);
+	}
+};
+
+const getPairingsData = (searchQuery) => {
+	const pairingsApiUrl = `https://api.spoonacular.com/recipes/complexSearch?query=${searchQuery}&number=3&apiKey=${apiKey}`;
+	fetch(pairingsApiUrl).then(function(response) {
+		response.json().then(function(data) {
+			// need to get these 3 foods displayed on the collapisble/expandable recipe cards
+			// grab ID of recipe
+			const recipeId = data.results[0].id
+			getPairingsRecipes(recipeId);
+		})
+	})
+};
+
+const getPairingsRecipes = (recipeId) => {
+	const recipesApiUrl = `https://api.spoonacular.com/recipes/${recipeId}/information?includeNutrition=false&apiKey=${apiKey}`;
+	fetch(recipesApiUrl).then(function(response) {
+		response.json().then(function(data) {
+			const recipeTitle = data.title;
+			const recipeSummary = data.summary;
+			recipeCardGenerator(recipeTitle, recipeSummary)
+		})
+	});
+};
+
+const getImageData = (selectedOption, info) => {
+	const unsplashApiKey = 'EE_GhE32LBWp_v-xfq5aidZGEPP4n4j3IAzvCZ-cEGw';
+	const unsplashApiUrl = `https://api.unsplash.com/search/photos?client_id=${unsplashApiKey}&query=${selectedOption}`;
+	fetch(unsplashApiUrl).then(function(response){
+		response.json().then(function(data){
+			let imgSrc = data.results[0].urls.raw;
+			infoCardGenerator(selectedOption, info, imgSrc);
+		})
+	})
+};
+
+// wine with food
+const getWineData = (apiUrl, selectedOption) => {
+	fetch(apiUrl).then(function(response) {
+		response.json().then(function(data) {
+			const info = data.text;
+			const foodPairings = data.pairings;
+			for(let i=0; i < 3; i++) {
+				let currentPairing = foodPairings[i];
+				getPairingsData(currentPairing);
+			}
+			getImageData(selectedOption, info);
+		});
+	})		
+};
+ 
+
+// food with wine
+const getFoodWithWineData = (apiUrl, selectedOption) => {
+	fetch(apiUrl).then(function(response) {
+		response.json().then(function(data) {
+			// console.log(data);
+			const pairingText = data.pairingText;
+			let pairedWines = data.pairedWines;
+			// need to get these 3 wines displayed on the collapisble/expandable recipe cards
+			// console.log(pairedWines);
+			getImageData(selectedOption, pairingText);
+		});
+	})
+};
 
 // refactoring information display function
-const infoCardGenerator = function(title, info, rating, img ) {
-	// content row div
-	const contentRow = document.createElement('div');
-	contentRow.setAttribute("class", "container row");
-	contentRow.setAttribute("id", "contentRow");
-
+const infoCardGenerator = function(selectedOption, info, img) {
 	// info card column div
 	const infoCardDiv = document.createElement('div');
 	infoCardDiv.setAttribute("class", "col s12 m5 card");
@@ -234,14 +310,14 @@ const infoCardGenerator = function(title, info, rating, img ) {
 
 	// card image element
 	const cardImgEl = document.createElement('img');
-	cardImgEl.setAttribute("src", "./assets/images/sample-1.jpg");
+	cardImgEl.setAttribute("src", img);
 	// append image el to info card image div
 	cardImageDiv.append(cardImgEl);
 
 	// card title element 
 	const cardSpanEl = document.createElement('span');
 	cardSpanEl.setAttribute("class", "card-title");
-	cardSpanEl.textContent = title;
+	cardSpanEl.textContent = selectedOption;
 	// append title span el to image div
 	cardImageDiv.append(cardSpanEl);
 
@@ -259,7 +335,7 @@ const infoCardGenerator = function(title, info, rating, img ) {
 
 	// create description div and content
 	const descriptionDiv = document.createElement('div');
-	descriptionDiv.setAttribute("class", "col s6");
+	descriptionDiv.setAttribute("class", "col");
 	// append description
 	cardContentRow.append(descriptionDiv);
 
@@ -267,33 +343,13 @@ const infoCardGenerator = function(title, info, rating, img ) {
 	const descriptionTitle = document.createElement('h4');
 	descriptionDiv.append(descriptionTitle);
 
-	descriptionTitle.textContent = 'description';
+	descriptionTitle.textContent = 'Description';
 
 	// create description el
 	const descriptionContent = document.createElement('p');
 	descriptionDiv.append(descriptionContent);
 
 	descriptionContent.textContent = info;
-
-
-	// create rating div
-	const ratingDiv = document.createElement("div");
-	ratingDiv.setAttribute("class", "col s6");
-	cardContentRow.append(ratingDiv);
-	// create rating el
-	const ratingTitle = document.createElement('h4');
-	ratingDiv.append(ratingTitle);
-
-	ratingTitle.textContent = 'rating';
-
-	// create description el
-	const descriptionRating = document.createElement('p');
-	ratingDiv.append(descriptionRating);
-
-	descriptionRating.textContent = rating;
-
-	// append info card col to main
-	mainEl.appendChild(contentRow);
 	// append info card div to info card col
 	contentRow.append(infoCardDiv);
 	// append info card 
@@ -302,81 +358,70 @@ const infoCardGenerator = function(title, info, rating, img ) {
 	$(document).ready(function(){
 		$('.collapsible').collapsible();
 	});
+	
+	recipePageConstructor();
 };
 
-const recipeCardGenerator = (recipe1, recipe2, recipe3) => {
-	const recipeCardDiv = document.createElement("div");
-	const recipeUl = document.createElement("ul");
-	recipeUl.setAttribute("class", "collapsible");
-	recipeCardDiv.classList.add("col", "s12", "m7");
-	recipeCardDiv.append(recipeUl);
-	for(let i =0; i < 3; i++) {
-		// create `li` el
-		const recipeLi = document.createElement("li");
-		// create header div and set class to collapsible-header
-		const recipeHeaderDiv = document.createElement("div");
-		recipeHeaderDiv.setAttribute("class", "collapsible-header");
-		// create body div and set class to collapsible-body
-		const recipeBodyDiv = document.createElement("div");
-		recipeBodyDiv.classList= "collapsible-body";
+const recipeCardGenerator = (recipeTitle, recipeSummary) => {
+	// create `li` el
+	const recipeLi = document.createElement("li");
+	// create header div and set class to collapsible-header
+	const recipeHeaderDiv = document.createElement("div");
+	recipeHeaderDiv.setAttribute("class", "collapsible-header");
+	// create body div and set class to collapsible-body
+	const recipeBodyDiv = document.createElement("div");
+	recipeBodyDiv.classList= "collapsible-body";
 
-		// set content of header and body divs
-		recipeHeaderDiv.innerHTML = `<i class="material-icons">filter_drama</i> Recipe ${i}`;
+	// set content of header and body divs
+	recipeHeaderDiv.innerHTML = `<i class="material-icons">filter_drama</i> ${recipeTitle}`;
 
-		// create and append row
-		const recipeBodyRow = document.createElement('div');
-		recipeBodyRow.classList = "row";
-		recipeBodyDiv.append(recipeBodyRow);
+	// create and append row
+	const recipeBodyRow = document.createElement('div');
+	recipeBodyRow.classList = "row";
+	recipeBodyDiv.append(recipeBodyRow);
 
-		// create and append text div
-		const recipeTextDiv = document.createElement('div');
-		recipeTextDiv.setAttribute("class", "col s11 m11 l11 xl11");
-		recipeBodyRow.append(recipeTextDiv);
+	// create and append text div
+	const recipeTextDiv = document.createElement('div');
+	recipeTextDiv.setAttribute("class", "col s11 m11 l11 xl11");
+	recipeBodyRow.append(recipeTextDiv);
 
-		// create recipe span
-		const recipeSpan = document.createElement('span');
-		recipeSpan.textContent = 'The best way to make lemonade is to make a simple syrup first, by heating water and sugar together until the sugar is completely dissolved, and then mix that with the lemon juice. The proportions will vary depending on how sweet and strong you like your lemonade, and how sour your lemons are to begin with. Late season lemons are less sour than early season lemons. Meyer lemons are sweeter than standard lemons.';
-		recipeTextDiv.append(recipeSpan);
-		console.log(recipeSpan);
+	// create recipe span
+	const recipeSpan = document.createElement('span');
+	recipeSpan.innerHTML = recipeSummary;
+	recipeTextDiv.append(recipeSpan);
 
-		// create like button div
-		const likeButtonDiv = document.createElement('div');
-		likeButtonDiv.setAttribute('class', 'col s1 m1 l1 xl1 favorites');
-		recipeBodyRow.append(likeButtonDiv);
+	// create like button div
+	const likeButtonDiv = document.createElement('div');
+	likeButtonDiv.setAttribute('class', 'col s1 m1 l1 xl1 favorites');
+	recipeBodyRow.append(likeButtonDiv);
 
-		// create like button
-		const likeButton = document.createElement('i');
-		likeButton.setAttribute('class', 'material-icons');
-		likeButton.textContent = 'favorite_border';
-		likeButtonDiv.append(likeButton);
-		likeButton.addEventListener("click", function() {
-			likeButton.textContent = 'favorite';
-		})
+	// create like button
+	const likeButton = document.createElement('i');
+	likeButton.setAttribute('class', 'material-icons');
+	likeButton.textContent = 'favorite_border';
+	likeButtonDiv.append(likeButton);
+	likeButton.addEventListener("click", function() {
+		likeButton.textContent = 'favorite';
+	})
 
-		// append everything
-		recipeLi.append(recipeHeaderDiv, recipeBodyDiv);
-		recipeUl.append(recipeLi);
-	}
-	// append recipeCard container div to contentrow in main
-	$("#contentRow").append(recipeCardDiv);
-
-	// add event listeners
-
-
+	// append everything
+	recipeLi.append(recipeHeaderDiv, recipeBodyDiv);
+	let recipeUl = $('#recipeUl');
+	recipeUl.append(recipeLi);
 };
 
+const surpriseMeData = () => {
+	removeEl();
 
-//create something to display the 3 options to the right
+	const wines = ["Sauvignon Blanc", "Chardonnay", "Champagne", "Pinot Noir", "Merlot", "Shiraz", "Cabernet Sauvignon", "Malbec", "Sangiovese"];
+	const randomWineEl = Math.floor(Math.random() * wines.length);
+	const surpriseMeWine = wines[randomWineEl];
+	console.log(surpriseMeWine);
+	validateDropdownType('Wine', surpriseMeWine);
+};
 
-listenerHandler(wineSelectorEl);
-listenerHandler(foodSelectorEl);
-listenerHandler(randomPairingEl);
-
-
-// clicking about us link
-aboutUsEl.addEventListener('click', function() {
-	// remove header and main elements (keeping the footer)
-	removeExistingElems();
+const aboutUs = () => {
+	removeEl();
 
 	const aboutUsHeader = document.createElement("h2");
 	aboutUsHeader.textContent = 'About Us';
@@ -406,4 +451,22 @@ aboutUsEl.addEventListener('click', function() {
 
 	  cardHolderRow.appendChild(aboutUsCard);
 	}
-});
+};
+
+/* Wine with Food perspective
+
+- get food pairings from wine api call
+for loop
+- recipeFetch(foodPairings[i])
+- input recipe info into for loop creating recipe cards
+
+*/
+
+
+listenerHandler(wineSelectorEl);
+listenerHandler(foodSelectorEl);
+randomPairingEl.addEventListener('click', surpriseMeData);
+
+
+// clicking about us link
+aboutUsEl.addEventListener('click', aboutUs);
