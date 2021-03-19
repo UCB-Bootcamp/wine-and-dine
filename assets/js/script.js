@@ -202,10 +202,10 @@ const displayCocktail = function(drinkName, drinkRecipe, drinkImage, drinkDataCo
 	// Makes it a normal card on smaller and horizontal card on larger
     $(window).resize(function(){
 
-		if($(window).width() <= 767){
+		if($(window).width() <= 860){
 		$('.horizontal').removeClass('horizontal');
 		}
-		if(767 <= $(window).width()){
+		if(860 <= $(window).width()){
 			$('.card').addClass('horizontal');
 		}
     });
