@@ -12,7 +12,7 @@ const foodSelectorEl = document.querySelector('#foodSelector');
 const randomPairingEl = document.querySelector('#randomPairing');
 const aboutUsEl = document.querySelector('#about-us');
 const wantCocktailEl = document.querySelector('#want-cocktail');
-const apiKey = '2e045af459ca42fda601b67a39611082';
+const apiKey = '3e4ea1bd7e9641199a76b70fb68b7c89';
 
 const ourNames = ['Tim Weyel', 'Shy Gois', 'Leah Russell', 'Sydney Walcoff', 'Carlos Vadillo'];
 const ourTitles = ['Director of HTML', 'Data Courier', 'Github Cat Wrangler', 'Chief Mischief Officer (CMO)', 'Unpaid Intern'];
@@ -234,7 +234,7 @@ const getPairingsData = (searchQuery) => {
 	const pairingsApiUrl = `https://api.spoonacular.com/recipes/complexSearch?query=${searchQuery}&number=3&apiKey=${apiKey}`;
 	fetch(pairingsApiUrl).then(function(response) {
 		response.json().then(function(data) {
-			// need to get these 3 foods displayed on the collapisble/expandable recipe cards
+			// need to get these 3 foods displayed on the collapsible/expandable recipe cards
 			// grab ID of recipe
 			const recipeId = data.results[0].id
 			getPairingsRecipes(recipeId);
@@ -287,7 +287,7 @@ const getFoodWithWineData = (apiUrl, selectedOption) => {
 			// console.log(data);
 			const pairingText = data.pairingText;
 			let pairedWines = data.pairedWines;
-			// need to get these 3 wines displayed on the collapisble/expandable recipe cards
+			// need to get these 3 wines displayed on the collapsible/expandable recipe cards
 			// console.log(pairedWines);
 			getImageData(selectedOption, pairingText);
 		});
@@ -462,11 +462,9 @@ for loop
 
 */
 
-
 listenerHandler(wineSelectorEl);
 listenerHandler(foodSelectorEl);
 randomPairingEl.addEventListener('click', surpriseMeData);
-
 
 // clicking about us link
 aboutUsEl.addEventListener('click', aboutUs);
