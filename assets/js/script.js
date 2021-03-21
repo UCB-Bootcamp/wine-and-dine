@@ -382,31 +382,13 @@ const recipeCardGenerator = (recipeTitle, recipeSummary) => {
 
 	// create and append text div
 	const recipeTextDiv = document.createElement('div');
-	recipeTextDiv.setAttribute("class", "col s11 m11 l11 xl11");
+	recipeTextDiv.setAttribute("class", "col");
 	recipeBodyRow.append(recipeTextDiv);
 
 	// create recipe span
 	const recipeSpan = document.createElement('span');
 	recipeSpan.innerHTML = recipeSummary;
 	recipeTextDiv.append(recipeSpan);
-
-	// create like button div
-	const likeButtonDiv = document.createElement('div');
-	likeButtonDiv.setAttribute('class', 'col s1 m1 l1 xl1 favorites');
-	recipeBodyRow.append(likeButtonDiv);
-
-	// create like button
-	const likeButton = document.createElement('i');
-	likeButton.setAttribute('class', 'material-icons');
-	likeButton.textContent = 'favorite_border';
-	likeButtonDiv.append(likeButton);
-	likeButton.addEventListener("click", function() {
-		if(likeButton.textContent === 'favorite') {
-			likeButton.textContent = 'favorite_border';
-		} else {
-			likeButton.textContent = 'favorite';
-		}
-	})
 
 	// append everything
 	recipeLi.append(recipeHeaderDiv, recipeBodyDiv);
