@@ -19,6 +19,10 @@ const apiKey = '97a4448b41f44c18bd70423cbfd292bb';
 const ourNames = ['Tim Weyel', 'Shy Gois', 'Leah Russell', 'Sydney Walcoff', 'Carlos Vadillo'];
 const ourTitles = ['Director of HTML', 'Data Courier', 'Github Cat Wrangler', 'Chief Mischief Officer (CMO)', 'Unpaid Intern'];
 
+// History Variables
+var wineHistory = [];
+var foodHistory = [];
+
 //create a function to remove all html elements except the footer
 const removeEl = () => {
 	headerEl.innerHTML = '';
@@ -75,7 +79,6 @@ const displayCocktail = function(drinkName, drinkRecipe, drinkImage, drinkDataCo
 
 	// Generating cocktail container 
 	const mainContainer = document.createElement('div');
-	mainContainer.setAttribute("class", "container");
 
 	// Insert the main row
 	const headerRow = document.createElement('div');
@@ -197,7 +200,6 @@ const displayCocktail = function(drinkName, drinkRecipe, drinkImage, drinkDataCo
 		}
 	}
 
-
 	contentRow.appendChild(mainContainer);
 
 	// Initialize the picture max
@@ -267,6 +269,9 @@ const getImageData = (selectedOption, info) => {
 const getWineData = (apiUrl, selectedOption) => {
 	fetch(apiUrl).then(function(response) {
 		response.json().then(function(data) {
+
+			localStorage.setItem("wineItems", JSON.stringify(wineHistory.push(selectedOption)));
+
 			const info = data.text;
 			const foodPairings = data.pairings;
 			for(let i=0; i < 3; i++) {
@@ -275,7 +280,7 @@ const getWineData = (apiUrl, selectedOption) => {
 			}
 			getImageData(selectedOption, info);
 		});
-	})		
+	})
 };
 
 // refactoring information display function
@@ -427,4 +432,115 @@ listenerHandler(wineSelectorEl);
 randomPairingEl.addEventListener('click', surpriseMeData);
 
 // clicking about us link
+aboutUsEl.addEventListener('click', aboutUs);
+
+// will render history elements on the page
+const displayHistory = function() {
+	removeEl();
+
+	// Container Div
+	const mainContainer = document.createElement('div');
+
+	const headerRow = document.createElement('div');
+	headerRow.setAttribute("class", "row");
+	mainContainer.append(headerRow);
+
+	// Header Div
+	const historyHeaderDiv = document.createElement('div');
+	historyHeaderDiv.setAttribute("class", "col s12");
+	headerRow.append(historyHeaderDiv);
+
+	// History Greeting
+	const historyHeader = document.createElement("h2");
+	historyHeader.textContent = 'Pairing History';
+	historyHeader.className = 'center';
+	historyHeaderDiv.append(historyHeader);
+
+	// History card row
+	const historyCardRow = document.createElement('div');
+	historyCardRow.setAttribute("class", "row");
+	mainContainer.append(historyCardRow);
+
+	// History card column
+	const historyCardCol = document.createElement('div');
+	historyCardCol.setAttribute("class", "col s12 m4");
+	historyCardRow.append(historyCardCol);
+
+	// History card
+	const historyCard = document.createElement('div');
+	historyCard.setAttribute("class", "card");
+	historyCardCol.append(historyCard);
+
+	// History card image
+	const historyImgDiv = document.createElement('div');
+	historyImgDiv.setAttribute("class", "card-image waves-effect waves-block waves-light");
+	historyCard.append(historyImgDiv);
+
+	// History image
+	const historyImg = document.createElement('img');
+	historyImg.setAttribute("class", "activator");
+	historyImg.setAttribute("src", "./assets/images/office.jpg");
+	historyImgDiv.append(historyImg);
+
+	// History card content
+	const historyCardContent = document.createElement('div');
+	historyCardContent.setAttribute("class", "card-content");
+	historyCard.append(historyCardContent);
+
+	// History Card Title
+	const historyCardTitle = document.createElement('span');
+	historyCardTitle.setAttribute("class", "card-title activator grey-text text-darken-4");
+	historyCardTitle.textContent = 'Card Title';
+	historyCard.append(historyCardTitle)
+
+	// History icon
+	const historyCardIcon = document.createElement('i');
+	historyCardIcon.setAttribute("class", "material-icons right");
+	historyCardIcon.textContent = 'more_vert';
+	historyCardTitle.append(historyCardIcon);
+
+	// History link text
+	const historyLinkText = document.createElement('p');
+	historyLinkText.textContent = 'This is a link';
+	historyCard.append(historyLinkText);
+
+	// History link
+	const historyLink = document.createElement('a');
+	historyLink.setAttribute("href", "#");
+	historyLinkText.append(historyLink);
+
+	// History card info
+	const historyCardInfo = document.createElement('div');
+	historyCardInfo.setAttribute("class", "card-reveal");
+	historyCard.append(historyCardInfo);
+	
+	// History info title
+	const historyInfoTitle = document.createElement('span');
+	historyInfoTitle.setAttribute("class", "card-title grey-text text-darken-4");
+	historyInfoTitle.textContent = 'Card Title';
+	historyCardInfo.append(historyInfoTitle);
+
+	// History icon
+	const historyInfoIcon = document.createElement('i');
+	historyInfoIcon.setAttribute("class", "material-icons right");
+	historyInfoIcon.textContent = 'close';
+	historyCardInfo.append(historyInfoIcon);
+
+	const historyInfo = document.createElement('p')
+	historyInfo.textContent = 'Here is some more information about this product that is only revealed once clicked on';
+	historyCardInfo.append(historyInfo);
+
+
+
+	contentRow.appendChild(mainContainer);
+
+};
+// Retrieve history from local storage
+const retrieveHistory = function(){
+	// Retrieve history
+	
+	displayHistory();
+};
+
+
 aboutUsEl.addEventListener('click', aboutUs);

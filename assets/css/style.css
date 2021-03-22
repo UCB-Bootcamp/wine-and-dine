@@ -1,5 +1,7 @@
 /*WINE APP CSS*/
-
+html {
+	scroll-behavior: smooth;
+   }
 
 /*TEST CODE FOR SPLIT IMAGE*/
 * {
@@ -12,7 +14,7 @@
 	width: 100vw;
 	height: 100vh;
 	text-align: center;
-	color: #CCC;
+	color: #fff;
 	position: relative;
 	text-transform: uppercase;
 	font-family: 'Amatic SC', sans-serif;
@@ -23,7 +25,7 @@
 	top: 0;
 	position: absolute;
 	width: 60%;
-	background-color: black;
+	background-color: rgba(0, 0, 0, 0);
 	height: 100vh;
 	clip-path: polygon(0 0, 60vw 0, 40vw 100vh, 0 100vh);
 	z-index: 1;
@@ -38,7 +40,7 @@
 	top: 0;
 	right: 0;
 	width: 60%;
-	background-color: green;
+	background-color: rgba(0, 0, 0, 0);
 	height: 100vh;
 	background-image: linear-gradient(rgba(0,0,0,.2), rgba(0,0,0,.5)), url('./hero2.jpg');
 	background-size: cover;
@@ -52,6 +54,7 @@
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
+	text-align: center;
 }
 
 .header-primary {
@@ -60,6 +63,26 @@
 	font-weight: 700;
 }
 
+.header-secondary {
+	font-size: .6em;
+	color: white;
+  }
+  .header-terciary {
+	  font-size: .4em;
+	  color: white;
+	  margin-top: 100px;
+  }
+  .header-terciary a {
+	  color: #c1c1c1;
+	  text-decoration: none;
+	  padding: 10px;
+	  text-align: center;
+	  letter-spacing: 0px;
+  }
+
+#main {
+	min-height: 90vh;
+}
 .main-heading {
 	text-align: center;
 }
@@ -82,19 +105,11 @@
     flex: 1 0 auto;
   }
 
-  .footer-links {
-	  display: inline;
+  .copyright {
+	  margin-bottom: 10px;
   }
 
-  #links-in-footer {
-	  display: flex;
-	  justify-content: space-between;
-	  margin: 0 150px;
+  .footer-link .wine-cocktail {
+	margin: 5px;
   }
-
-	.home-link {
-		padding: 0 20px;
-	}
-
-
   
