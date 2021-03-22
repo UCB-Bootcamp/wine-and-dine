@@ -73,6 +73,7 @@ const getRecipeData = recipeId => {
 // creates div for recipes
 const recipePageConstructor = () => {
 	const recipeCardDiv = document.createElement("div");
+	recipeCardDiv.setAttribute("id", "recipe-card-div");
 	const recipeUl = document.createElement("ul");
 	recipeUl.setAttribute("class", "collapsible");
 	recipeUl.setAttribute("id", "recipeUl");
@@ -127,34 +128,15 @@ const getWineImage = (selectedOption, info) => {
 	fetch(unsplashApiUrl).then(function(response){
 		response.json().then(function(data){
 			let imgSrc = data.results[0].urls.raw;
-			//displayImage(imgSrc);
 			infoCardGenerator(selectedOption, info, imgSrc);
 		})
 	})
 };
 
-const displayImage = (img) => {
-	// info card column div
-	const infoCardDiv = document.createElement('div');
-	infoCardDiv.setAttribute("class", "col s12 m5 card");
-	// append info card column div to content row
-	contentRow.append(infoCardDiv);
-
-	// info card image div
-	const cardImageDiv = document.createElement('div');
-	cardImageDiv.setAttribute("class", "card-image");
-	// append info card image div to info card column div
-	infoCardDiv.append(cardImageDiv);
-
-	// card image element
-	const cardImgEl = document.createElement('img');
-	cardImgEl.setAttribute("src", img);
-	// append image el to info card image div
-	cardImageDiv.append(cardImgEl);
-};
-
-const getWineData = (apiUrl, selectedOption) => {
-	fetch(apiUrl).then(function(response) {
+// get title and description for selected wine
+const getWineData = (selectedOption) => {
+	const wineApiUrl = `https://api.spoonacular.com/food/wine/dishes?wine=${selectedOption}&apiKey=${apiKey}`;
+	fetch(wineApiUrl).then(function(response) {
 		response.json().then(function(data) {
 
 			const info = data.text;
@@ -169,16 +151,18 @@ const getWineData = (apiUrl, selectedOption) => {
 	})
 };
 
-// display info card with wine image, title and description
-const infoCardGenerator = function(selectedOption, info, img) {
-	// getWineImage(selectedOption, imgSrc);
-	// getWineData();
-
+const infoCardConstructor = () => {
 	// info card column div
-	const infoCardDiv = document.createElement('div');
+	let infoCardDiv = document.createElement('div');
 	infoCardDiv.setAttribute("class", "col s12 m5 card");
+	infoCardDiv.setAttribute("id", "info-card-div");
 	// append info card column div to content row
 	contentRow.append(infoCardDiv);
+}
+
+// display info card with wine image, title and description
+const infoCardGenerator = function(selectedOption, info, img) {
+	let infoCardDiv = $('#info-card-div');
 
 	// info card image div
 	const cardImageDiv = document.createElement('div');
@@ -229,10 +213,7 @@ const infoCardGenerator = function(selectedOption, info, img) {
 
 	descriptionContent.textContent = info;
 	// append info card div to info card col
-	contentRow.append(infoCardDiv);
-	// append info card
 };
-
 
 
 // SUPRISE ME FUNCTIONS
@@ -453,8 +434,7 @@ const displayCocktail = function(drinkName, drinkRecipe, drinkImage, drinkDataCo
 wantCocktailEl.addEventListener('click', getCocktail);
 // fetch data
 const validateDropdownType = (selectedOption) => {
-	const wineApiUrl = `https://api.spoonacular.com/food/wine/dishes?wine=${selectedOption}&apiKey=${apiKey}`;
-	getWineData(wineApiUrl, selectedOption);
+
 };
 
 // HISTORY FUNCTIONS
@@ -566,12 +546,11 @@ loadWineHistory();
 wineSelectorEl.addEventListener('change', function() {
 	const selectedOption = this.options[this.selectedIndex].text;
 	saveWineHistory(selectedOption);
-	//const dataType = this.options[0].text.split(' ')[0];
-	validateDropdownType(selectedOption);
+	getWineData(selectedOption);
 	removeEl();
 	contentRow.setAttribute("class", "container row");
+	infoCardConstructor();
 	recipePageConstructor();
-	//infoCardGenerator(selectedOption, info, img);
 });
 
 // clicking 'Surprise Me' link
