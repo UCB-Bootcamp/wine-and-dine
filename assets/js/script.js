@@ -21,8 +21,7 @@ const historyEl = document.querySelector('#history');
 // ARRAYS FOR HARDCODED DATA GO
 const ourNames = ['Tim Weyel', 'Shy Gois', 'Leah Russell', 'Sydney Walcoff', 'Carlos Vadillo'];
 const ourTitles = ['Director of HTML', 'Data Courier', 'Github Cat Wrangler', 'Chief Mischief Officer (CMO)', 'Unpaid Intern'];
-var wineHistory = ["test"];
-console.log('line 24', wineHistory);
+
 
 // REUSABLE FUNCTIONS
 const removeEl = () => {
@@ -33,26 +32,33 @@ const removeEl = () => {
 // WINE DROPDOWN FUNCTIONS
 // save selected wines
 const saveWineHistory = (selectedOption) => {
-	console.log('selectedOption', selectedOption);
-
-	if (!wineHistory) {
-		wineHistory = [];
-	};
-	console.log('wineHistory', wineHistory);
-	wineHistory.unshift(selectedOption);
-	console.log(wineHistory);
-
-	for (let i=0; i<wineHistory.length; i++) {
-		console.log('wineHistory[i]', wineHistory[i]);
-		if (selectedOption === wineHistory[i]) {
-			// merlot        !== null
-			console.log('this was a dupe');
-			return wineHistory;
-
-		} else {
+	let wineHistory = [];
+	console.log('line 35', wineHistory);
 			localStorage.setItem('wineItems', JSON.stringify(wineHistory));
-		}
-	}
+			wineHistory.push(selectedOption);
+			console.log(wineHistory);
+
+
+
+	// console.log('selectedOption', selectedOption);
+
+	// console.log('wineHistory', wineHistory);
+
+
+	// for (let i=0; i<wineHistory.length; i++) {
+	// 	console.log('wineHistory[i]', wineHistory[i]);
+	// 	if (selectedOption === wineHistory[i]) {
+	// 		// merlot        !== null
+	// 		console.log('this was a dupe');
+	// 		return wineHistory;
+
+	// 	} else {
+	// 		wineHistory.unshift(selectedOption);
+	// 		console.log(wineHistory);
+	// 		localStorage.setItem('wineItems', JSON.stringify(wineHistory));
+	// 	}
+	// }
+
 
 };
 
@@ -60,10 +66,6 @@ const saveWineHistory = (selectedOption) => {
 const loadWineHistory = () => {
 	wineHistory = JSON.parse(localStorage.getItem('wineItems'));
 	console.log(wineHistory);
-
-	if (!wineHistory) {
-		wineHistory = [];
-	};
 };
 
 // get image for selected wine
@@ -455,7 +457,7 @@ wantCocktailEl.addEventListener('click', getCocktail);
 // HISTORY FUNCTIONS
 const displayHistory = () => {
 	removeEl();
-
+	loadWineHistory(wineHistory);
 	// History Greeting
 	const historyHeader = document.createElement("h2");
 	historyHeader.textContent = 'Pairing History';
@@ -545,8 +547,6 @@ const displayHistory = () => {
 		});
 	}
 };
-
-loadWineHistory();
 
 // clicking wine selector dropdown
 wineSelectorEl.addEventListener('change', function() {
