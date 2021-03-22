@@ -35,16 +35,16 @@ const saveWineHistory = (selectedOption) => {
 	
 	let wineHistory = [];
 	let temp = JSON.parse(localStorage.getItem("wineItems")) || [];
-	console.log('temp', temp);
+	//console.log('temp', temp);
 
 	if (temp.indexOf(selectedOption) === -1) {
 		temp.push(selectedOption);
 		localStorage.setItem('wineItems', JSON.stringify(temp));
 		wineHistory = temp; 
-		console.log('line 52 wineHistory',wineHistory);
+		//console.log('line 52 wineHistory',wineHistory);
 	} else {
 		wineHistory = temp;
-		console.log('line 56 wineHistory', wineHistory);
+		//console.log('line 56 wineHistory', wineHistory);
 	}
 	return wineHistory;
 };
@@ -444,7 +444,7 @@ wantCocktailEl.addEventListener('click', getCocktail);
 // HISTORY FUNCTIONS
 const displayHistory = () => {
 	removeEl();
-	loadWineHistory(wineHistory);
+	loadWineHistory();
 	// History Greeting
 	const historyHeader = document.createElement("h2");
 	historyHeader.textContent = 'Pairing History';
