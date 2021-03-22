@@ -7,3 +7,5 @@ Users can like selected wines or recipes and have the option of viewing their li
 The application itself is built using HTML, CSS and Javascript. It also uses Materialize as a UI Framework, and used icons from Material.io. It's deployed using Github Pages.
 
 The deployed application can be found [here](https://ucb-bootcamp.github.io/wine-and-dine/).
+
+![preview of wine and dine application](./assets/images/wine-and-dine.png)
