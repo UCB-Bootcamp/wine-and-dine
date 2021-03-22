@@ -279,16 +279,36 @@ const getWineData = (apiUrl, selectedOption) => {
 	})		
 };
  
+// const wineDescApiUrl = `https://api.spoonacular.com/food/wine/description?wine=${currentWine}&apiKey=${apiKey}`;
+
+// const getWineDescription = (wineDescApiUrl, currentWine) => {
+
+// 	fetch(wineDescApiUrl).then(function(response) {
+// 		response.json().then(function(data) {
+// 			console.log('wineDescData', data);
+// 			const wineDescription = data.wineDescription;
+// 			console.log('wineDescription', wineDescription);
+// 		})
+// 		console.log('wineDescData',)
+// 	})
+// }
+
 
 // food with wine
 const getFoodWithWineData = (apiUrl, selectedOption) => {
 	fetch(apiUrl).then(function(response) {
 		response.json().then(function(data) {
-			// console.log(data);
+			//console.log('data', data);
 			const pairingText = data.pairingText;
+			console.log('pairingText', pairingText);
 			let pairedWines = data.pairedWines;
 			// need to get these 3 wines displayed on the collapsible/expandable recipe cards
-			// console.log(pairedWines);
+			console.log(pairedWines);
+			for(let i=0; i < 3; i++) {
+				let currentWine = pairedWines[i];
+				console.log('currentWine', currentWine);
+				//getWineDescription(wineDescApiUrl, currentWine);
+			}
 			getImageData(selectedOption, pairingText);
 		});
 	})
