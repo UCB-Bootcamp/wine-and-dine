@@ -47,80 +47,6 @@ const loadWineHistory = () => {
 	}
 };
 
-// search for recipes that contained suggested food pairing
-const getRecipes = searchQuery => {
-	const pairingsApiUrl = `https://api.spoonacular.com/recipes/complexSearch?query=${searchQuery}&number=3&apiKey=${apiKey}`;
-	fetch(pairingsApiUrl).then(function(response) {
-		response.json().then(function(data) {
-			const recipeId = data.results[0].id
-			getRecipeData(recipeId);
-		})
-	})
-};
-
-// get recipe information for above listed recipes
-const getRecipeData = recipeId => {
-	const recipesApiUrl = `https://api.spoonacular.com/recipes/${recipeId}/information?includeNutrition=false&apiKey=${apiKey}`;
-	fetch(recipesApiUrl).then(function(response) {
-		response.json().then(function(data) {
-			const recipeTitle = data.title;
-			const recipeSummary = data.summary;
-			recipeCardGenerator(recipeTitle, recipeSummary)
-		})
-	});
-};
-
-// creates div for recipes
-const recipePageConstructor = () => {
-	const recipeCardDiv = document.createElement("div");
-	recipeCardDiv.setAttribute("id", "recipe-card-div");
-	const recipeUl = document.createElement("ul");
-	recipeUl.setAttribute("class", "collapsible");
-	recipeUl.setAttribute("id", "recipeUl");
-	recipeCardDiv.classList.add("col", "s12", "m7");
-	recipeCardDiv.append(recipeUl);
-	contentRow.append(recipeCardDiv);
-};
-
-// generate expandable card for each recipe that will go inside recipePageConstructor and display data from getRecipeData function
-const recipeCardGenerator = (recipeTitle, recipeSummary) => {
-	// create `li` el
-	const recipeLi = document.createElement("li");
-	// create header div and set class to collapsible-header
-	const recipeHeaderDiv = document.createElement("div");
-	recipeHeaderDiv.setAttribute("class", "collapsible-header");
-	// create body div and set class to collapsible-body
-	const recipeBodyDiv = document.createElement("div");
-	recipeBodyDiv.classList= "collapsible-body";
-
-	// set content of header and body divs
-	recipeHeaderDiv.innerHTML = `<i class="material-icons">filter_drama</i> ${recipeTitle}`;
-
-	// create and append row
-	const recipeBodyRow = document.createElement('div');
-	recipeBodyRow.classList = "row";
-	recipeBodyDiv.append(recipeBodyRow);
-
-	// create and append text div
-	const recipeTextDiv = document.createElement('div');
-	recipeTextDiv.setAttribute("class", "col");
-	recipeBodyRow.append(recipeTextDiv);
-
-	// create recipe span
-	const recipeSpan = document.createElement('span');
-	recipeSpan.innerHTML = recipeSummary;
-	recipeTextDiv.append(recipeSpan);
-
-	// append everything
-	recipeLi.append(recipeHeaderDiv, recipeBodyDiv);
-	let recipeUl = $('#recipeUl');
-	recipeUl.append(recipeLi);
-
-	$(document).ready(function(){
-		$('.collapsible').collapsible();
-	});
-};
-
 // get image for selected wine
 const getWineImage = (selectedOption, info) => {
 	const unsplashApiKey = 'EE_GhE32LBWp_v-xfq5aidZGEPP4n4j3IAzvCZ-cEGw';
@@ -215,15 +141,90 @@ const infoCardGenerator = function(selectedOption, info, img) {
 	// append info card div to info card col
 };
 
+// search for recipes that contained suggested food pairing
+const getRecipes = searchQuery => {
+	const pairingsApiUrl = `https://api.spoonacular.com/recipes/complexSearch?query=${searchQuery}&number=3&apiKey=${apiKey}`;
+	fetch(pairingsApiUrl).then(function(response) {
+		response.json().then(function(data) {
+			const recipeId = data.results[0].id
+			getRecipeData(recipeId);
+		})
+	})
+};
+
+// get recipe information for above listed recipes
+const getRecipeData = recipeId => {
+	const recipesApiUrl = `https://api.spoonacular.com/recipes/${recipeId}/information?includeNutrition=false&apiKey=${apiKey}`;
+	fetch(recipesApiUrl).then(function(response) {
+		response.json().then(function(data) {
+			const recipeTitle = data.title;
+			const recipeSummary = data.summary;
+			recipeCardGenerator(recipeTitle, recipeSummary)
+		})
+	});
+};
+
+// creates div for recipes
+const recipePageConstructor = () => {
+	const recipeCardDiv = document.createElement("div");
+	recipeCardDiv.setAttribute("id", "recipe-card-div");
+	const recipeUl = document.createElement("ul");
+	recipeUl.setAttribute("class", "collapsible");
+	recipeUl.setAttribute("id", "recipeUl");
+	recipeCardDiv.classList.add("col", "s12", "m7");
+	recipeCardDiv.append(recipeUl);
+	contentRow.append(recipeCardDiv);
+};
+
+// generate expandable card for each recipe that will go inside recipePageConstructor and display data from getRecipeData function
+const recipeCardGenerator = (recipeTitle, recipeSummary) => {
+	// create `li` el
+	const recipeLi = document.createElement("li");
+	// create header div and set class to collapsible-header
+	const recipeHeaderDiv = document.createElement("div");
+	recipeHeaderDiv.setAttribute("class", "collapsible-header");
+	// create body div and set class to collapsible-body
+	const recipeBodyDiv = document.createElement("div");
+	recipeBodyDiv.classList= "collapsible-body";
+
+	// set content of header and body divs
+	recipeHeaderDiv.innerHTML = `<i class="material-icons">filter_drama</i> ${recipeTitle}`;
+
+	// create and append row
+	const recipeBodyRow = document.createElement('div');
+	recipeBodyRow.classList = "row";
+	recipeBodyDiv.append(recipeBodyRow);
+
+	// create and append text div
+	const recipeTextDiv = document.createElement('div');
+	recipeTextDiv.setAttribute("class", "col");
+	recipeBodyRow.append(recipeTextDiv);
+
+	// create recipe span
+	const recipeSpan = document.createElement('span');
+	recipeSpan.innerHTML = recipeSummary;
+	recipeTextDiv.append(recipeSpan);
+
+	// append everything
+	recipeLi.append(recipeHeaderDiv, recipeBodyDiv);
+	let recipeUl = $('#recipeUl');
+	recipeUl.append(recipeLi);
+
+	$(document).ready(function(){
+		$('.collapsible').collapsible();
+	});
+};
 
 // SUPRISE ME FUNCTIONS
 const surpriseMeData = () => {
-	removeEl();
-
 	const wines = ["Sauvignon Blanc", "Chardonnay", "Champagne", "Pinot Noir", "Merlot", "Shiraz", "Cabernet Sauvignon", "Malbec", "Sangiovese"];
 	const randomWineEl = Math.floor(Math.random() * wines.length);
 	const surpriseMeWine = wines[randomWineEl];
-	validateDropdownType(surpriseMeWine);
+	getWineData(surpriseMeWine);
+	removeEl();
+	contentRow.setAttribute("class", "container row");
+	infoCardConstructor();
+	recipePageConstructor();
 };
 
 // ABOUT US FUNCTIONS
