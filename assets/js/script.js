@@ -489,7 +489,12 @@ const displayHistory = () => {
 		const historyCardTitle = document.createElement('span');
 		historyCardTitle.setAttribute("class", "card-title activator grey-text text-darken-4");
 		historyCardTitle.textContent = wineItem;
-		historyCard.append(historyCardTitle)
+		historyCardContent.append(historyCardTitle)
+
+		const historyCardTitleIcon = document.createElement('i');
+		historyCardTitleIcon.setAttribute("class", "material-icons right");
+		historyCardTitleIcon.textContent = 'more_vert';
+		historyCardTitle.append(historyCardTitleIcon);
 
 		// History card info
 		const historyCardInfo = document.createElement('div');
@@ -506,7 +511,7 @@ const displayHistory = () => {
 		const historyInfoIcon = document.createElement('i');
 		historyInfoIcon.setAttribute("class", "material-icons right");
 		historyInfoIcon.textContent = 'close';
-		historyCardInfo.append(historyInfoIcon);
+		historyInfoTitle.append(historyInfoIcon);
 
 		fetch(wineApiUrl).then(function(response){
 			response.json().then(function(data) {
