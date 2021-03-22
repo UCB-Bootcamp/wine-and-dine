@@ -8,7 +8,6 @@ const cocktailApi = "https://www.thecocktaildb.com/api/json/v1/1/random.php"
 const wineSelectorEl = document.querySelector('#wineSelector'); 
 const contentRow = document.querySelector('#contentRow');
 const headerEl = document.querySelector('#header');
-const foodSelectorEl = document.querySelector('#foodSelector');
 const randomPairingEl = document.querySelector('#randomPairing');
 const aboutUsEl = document.querySelector('#about-us');
 const wantCocktailEl = document.querySelector('#want-cocktail');
@@ -278,41 +277,6 @@ const getWineData = (apiUrl, selectedOption) => {
 		});
 	})		
 };
- 
-// const wineDescApiUrl = `https://api.spoonacular.com/food/wine/description?wine=${currentWine}&apiKey=${apiKey}`;
-
-// const getWineDescription = (wineDescApiUrl, currentWine) => {
-
-// 	fetch(wineDescApiUrl).then(function(response) {
-// 		response.json().then(function(data) {
-// 			console.log('wineDescData', data);
-// 			const wineDescription = data.wineDescription;
-// 			console.log('wineDescription', wineDescription);
-// 		})
-// 		console.log('wineDescData',)
-// 	})
-// }
-
-
-// food with wine
-const getFoodWithWineData = (apiUrl, selectedOption) => {
-	fetch(apiUrl).then(function(response) {
-		response.json().then(function(data) {
-			//console.log('data', data);
-			const pairingText = data.pairingText;
-			console.log('pairingText', pairingText);
-			let pairedWines = data.pairedWines;
-			// need to get these 3 wines displayed on the collapsible/expandable recipe cards
-			console.log(pairedWines);
-			for(let i=0; i < 3; i++) {
-				let currentWine = pairedWines[i];
-				console.log('currentWine', currentWine);
-				//getWineDescription(wineDescApiUrl, currentWine);
-			}
-			getImageData(selectedOption, pairingText);
-		});
-	})
-};
 
 // refactoring information display function
 const infoCardGenerator = function(selectedOption, info, img) {
@@ -473,17 +437,7 @@ const aboutUs = () => {
 	}
 };
 
-/* Wine with Food perspective
-
-- get food pairings from wine api call
-for loop
-- recipeFetch(foodPairings[i])
-- input recipe info into for loop creating recipe cards
-
-*/
-
 listenerHandler(wineSelectorEl);
-listenerHandler(foodSelectorEl);
 randomPairingEl.addEventListener('click', surpriseMeData);
 
 // clicking about us link
