@@ -80,6 +80,10 @@ html {
 	  letter-spacing: 0px;
   }
 
+#info-card-div{
+	padding: 0;
+}
+
 #main {
 	min-height: 90vh;
 }
