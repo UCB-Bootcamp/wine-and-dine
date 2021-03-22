@@ -21,7 +21,7 @@ const historyEl = document.querySelector('#history');
 // ARRAYS FOR HARDCODED DATA GO
 const ourNames = ['Tim Weyel', 'Shy Gois', 'Leah Russell', 'Sydney Walcoff', 'Carlos Vadillo'];
 const ourTitles = ['Director of HTML', 'Data Courier', 'Github Cat Wrangler', 'Chief Mischief Officer (CMO)', 'Unpaid Intern'];
-let wineHistory = [];
+
 
 // REUSABLE FUNCTIONS
 const removeEl = () => {
@@ -32,20 +32,27 @@ const removeEl = () => {
 // WINE DROPDOWN FUNCTIONS
 // save selected wines
 const saveWineHistory = (selectedOption) => {
-	wineHistory.unshift(selectedOption);
-	console.log(wineHistory);
+	
+	let wineHistory = [];
+	let temp = JSON.parse(localStorage.getItem("wineItems")) || [];
+	//console.log('temp', temp);
 
-	localStorage.setItem('wineItems', JSON.stringify(wineHistory));
+	if (temp.indexOf(selectedOption) === -1) {
+		temp.push(selectedOption);
+		localStorage.setItem('wineItems', JSON.stringify(temp));
+		wineHistory = temp; 
+		//console.log('line 52 wineHistory',wineHistory);
+	} else {
+		wineHistory = temp;
+		//console.log('line 56 wineHistory', wineHistory);
+	}
+	return wineHistory;
 };
 
 // load selected wines
 const loadWineHistory = () => {
 	wineHistory = JSON.parse(localStorage.getItem('wineItems'));
 	console.log(wineHistory);
-
-	if (!wineHistory) {
-		wineHistory = [];
-	};
 };
 
 // get image for selected wine
@@ -437,7 +444,7 @@ wantCocktailEl.addEventListener('click', getCocktail);
 // HISTORY FUNCTIONS
 const displayHistory = () => {
 	removeEl();
-
+	loadWineHistory();
 	// History Greeting
 	const historyHeader = document.createElement("h2");
 	historyHeader.textContent = 'Pairing History';
@@ -527,8 +534,6 @@ const displayHistory = () => {
 		});
 	}
 };
-
-loadWineHistory();
 
 // clicking wine selector dropdown
 wineSelectorEl.addEventListener('change', function() {
