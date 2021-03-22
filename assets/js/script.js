@@ -3,6 +3,7 @@ M.AutoInit();
 
 // API VARIABLES GO HERE
 const cocktailApi = "https://www.thecocktaildb.com/api/json/v1/1/random.php";
+const unsplashApiKey = 'EE_GhE32LBWp_v-xfq5aidZGEPP4n4j3IAzvCZ-cEGw';
 // const apiKey = '97a4448b41f44c18bd70423cbfd292bb';
 // const apiKey = 'f9e4f37f62de4dba85137360011a63c2';
  const apiKey = '3e4ea1bd7e9641199a76b70fb68b7c89';
@@ -20,6 +21,7 @@ const historyEl = document.querySelector('#history');
 // ARRAYS FOR HARDCODED DATA GO
 const ourNames = ['Tim Weyel', 'Shy Gois', 'Leah Russell', 'Sydney Walcoff', 'Carlos Vadillo'];
 const ourTitles = ['Director of HTML', 'Data Courier', 'Github Cat Wrangler', 'Chief Mischief Officer (CMO)', 'Unpaid Intern'];
+let wineHistory = [];
 
 // REUSABLE FUNCTIONS
 const removeEl = () => {
@@ -41,16 +43,11 @@ const loadWineHistory = () => {
 	if (!wineHistory) {
 		wineHistory = [];
 	};
-
-	for(let i=0; i < wineHistory.length; i++) {
-		console.log(wineHistory[i]);
-	}
 };
 
 // get image for selected wine
 const getWineImage = (selectedOption, info) => {
-	const unsplashApiKey = 'EE_GhE32LBWp_v-xfq5aidZGEPP4n4j3IAzvCZ-cEGw';
-	const unsplashApiUrl = `https://api.unsplash.com/search/photos?client_id=${unsplashApiKey}&query=${selectedOption}`;
+	const unsplashApiUrl = `https://api.unsplash.com/search/photos?client_id=${unsplashApiKey}&query=${selectedOption}-wine`;
 	fetch(unsplashApiUrl).then(function(response){
 		response.json().then(function(data){
 			let imgSrc = data.results[0].urls.raw;
@@ -84,10 +81,10 @@ const infoCardConstructor = () => {
 	infoCardDiv.setAttribute("id", "info-card-div");
 	// append info card column div to content row
 	contentRow.append(infoCardDiv);
-}
+};
 
 // display info card with wine image, title and description
-const infoCardGenerator = function(selectedOption, info, img) {
+const infoCardGenerator = (selectedOption, info, img) => {
 	let infoCardDiv = $('#info-card-div');
 
 	// info card image div
@@ -433,112 +430,94 @@ const displayCocktail = function(drinkName, drinkRecipe, drinkImage, drinkDataCo
 };
 
 wantCocktailEl.addEventListener('click', getCocktail);
-// fetch data
-const validateDropdownType = (selectedOption) => {
-
-};
 
 // HISTORY FUNCTIONS
-const displayHistory = function() {
+const displayHistory = () => {
 	removeEl();
-	getWineImage(selectedOption, info);
-
-	// Container Div
-	const mainContainer = document.createElement('div');
-
-	const headerRow = document.createElement('div');
-	headerRow.setAttribute("class", "row");
-	mainContainer.append(headerRow);
-
-	// Header Div
-	const historyHeaderDiv = document.createElement('div');
-	historyHeaderDiv.setAttribute("class", "col s12");
-	headerRow.append(historyHeaderDiv);
 
 	// History Greeting
 	const historyHeader = document.createElement("h2");
 	historyHeader.textContent = 'Pairing History';
 	historyHeader.className = 'center';
-	historyHeaderDiv.append(historyHeader);
+	contentRow.append(historyHeader);
 
 	// History card row
 	const historyCardRow = document.createElement('div');
 	historyCardRow.setAttribute("class", "row");
-	mainContainer.append(historyCardRow);
+	contentRow.append(historyCardRow);
 
-	// History card column
-	const historyCardCol = document.createElement('div');
-	historyCardCol.setAttribute("class", "col s12 m4");
-	historyCardRow.append(historyCardCol);
+	for(let i=0; i < wineHistory.length; i++) {
+		const wineItem = wineHistory[i];
+		const unsplashApiUrl = `https://api.unsplash.com/search/photos?client_id=${unsplashApiKey}&query=${wineItem}-wine`;
+		const wineApiUrl = `https://api.spoonacular.com/food/wine/dishes?wine=${wineItem}&apiKey=${apiKey}`;
 
-	// History card
-	const historyCard = document.createElement('div');
-	historyCard.setAttribute("class", "card");
-	historyCardCol.append(historyCard);
+		console.log(wineItem);
 
-	// History card image
-	const historyImgDiv = document.createElement('div');
-	historyImgDiv.setAttribute("class", "card-image waves-effect waves-block waves-light");
-	historyCard.append(historyImgDiv);
+		// History card column
+		const historyCardCol = document.createElement('div');
+		historyCardCol.setAttribute("class", "col s12 m4");
+		historyCardRow.append(historyCardCol);
 
-	// History image
-	const historyImg = document.createElement('img');
-	historyImg.setAttribute("class", "activator");
-	historyImg.setAttribute("src", "./assets/images/office.jpg");
-	historyImgDiv.append(historyImg);
+		// History card
+		const historyCard = document.createElement('div');
+		historyCard.setAttribute("class", "card");
+		historyCardCol.append(historyCard);
 
-	// History card content
-	const historyCardContent = document.createElement('div');
-	historyCardContent.setAttribute("class", "card-content");
-	historyCard.append(historyCardContent);
+		// History card image
+		const historyImgDiv = document.createElement('div');
+		historyImgDiv.setAttribute("class", "card-image waves-effect waves-block waves-light");
+		historyCard.append(historyImgDiv);
 
-	// History Card Title
-	const historyCardTitle = document.createElement('span');
-	historyCardTitle.setAttribute("class", "card-title activator grey-text text-darken-4");
-	historyCardTitle.textContent = 'Card Title';
-	historyCard.append(historyCardTitle)
+		fetch(unsplashApiUrl).then(function(response){
+			response.json().then(function(data){
+				let img = data.results[0].urls.raw;
 
-	// History icon
-	const historyCardIcon = document.createElement('i');
-	historyCardIcon.setAttribute("class", "material-icons right");
-	historyCardIcon.textContent = 'more_vert';
-	historyCardTitle.append(historyCardIcon);
+				// History image
+				const historyImg = document.createElement('img');
+				historyImg.setAttribute("class", "activator");
+				historyImg.setAttribute("src", img);
+				historyImgDiv.append(historyImg);
+			})
+		});
 
-	// History link text
-	const historyLinkText = document.createElement('p');
-	historyLinkText.textContent = 'This is a link';
-	historyCard.append(historyLinkText);
+		// History card content
+		const historyCardContent = document.createElement('div');
+		historyCardContent.setAttribute("class", "card-content");
+		historyCard.append(historyCardContent);
 
-	// History link
-	const historyLink = document.createElement('a');
-	historyLink.setAttribute("href", "#");
-	historyLinkText.append(historyLink);
+		// History Card Title
+		const historyCardTitle = document.createElement('span');
+		historyCardTitle.setAttribute("class", "card-title activator grey-text text-darken-4");
+		historyCardTitle.textContent = wineItem;
+		historyCard.append(historyCardTitle)
 
-	// History card info
-	const historyCardInfo = document.createElement('div');
-	historyCardInfo.setAttribute("class", "card-reveal");
-	historyCard.append(historyCardInfo);
-	
-	// History info title
-	const historyInfoTitle = document.createElement('span');
-	historyInfoTitle.setAttribute("class", "card-title grey-text text-darken-4");
-	historyInfoTitle.textContent = 'Card Title';
-	historyCardInfo.append(historyInfoTitle);
+		// History card info
+		const historyCardInfo = document.createElement('div');
+		historyCardInfo.setAttribute("class", "card-reveal");
+		historyCard.append(historyCardInfo);
 
-	// History icon
-	const historyInfoIcon = document.createElement('i');
-	historyInfoIcon.setAttribute("class", "material-icons right");
-	historyInfoIcon.textContent = 'close';
-	historyCardInfo.append(historyInfoIcon);
+		// History info title
+		const historyInfoTitle = document.createElement('span');
+		historyInfoTitle.setAttribute("class", "card-title grey-text text-darken-4");
+		historyInfoTitle.textContent = wineItem;
+		historyCardInfo.append(historyInfoTitle);
 
-	const historyInfo = document.createElement('p')
-	historyInfo.textContent = 'Here is some more information about this product that is only revealed once clicked on';
-	historyCardInfo.append(historyInfo);
+		// History icon
+		const historyInfoIcon = document.createElement('i');
+		historyInfoIcon.setAttribute("class", "material-icons right");
+		historyInfoIcon.textContent = 'close';
+		historyCardInfo.append(historyInfoIcon);
 
+		fetch(wineApiUrl).then(function(response){
+			response.json().then(function(data) {
+				const info = data.text;
 
-
-	contentRow.appendChild(mainContainer);
-
+				const historyInfo = document.createElement('p');
+				historyInfo.textContent = info;
+				historyCardInfo.append(historyInfo);
+			})
+		});
+	}
 };
 
 loadWineHistory();
