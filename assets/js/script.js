@@ -32,34 +32,21 @@ const removeEl = () => {
 // WINE DROPDOWN FUNCTIONS
 // save selected wines
 const saveWineHistory = (selectedOption) => {
+	
 	let wineHistory = [];
-	console.log('line 35', wineHistory);
-			localStorage.setItem('wineItems', JSON.stringify(wineHistory));
-			wineHistory.push(selectedOption);
-			console.log(wineHistory);
+	let temp = JSON.parse(localStorage.getItem("wineItems")) || [];
+	console.log('temp', temp);
 
-
-
-	// console.log('selectedOption', selectedOption);
-
-	// console.log('wineHistory', wineHistory);
-
-
-	// for (let i=0; i<wineHistory.length; i++) {
-	// 	console.log('wineHistory[i]', wineHistory[i]);
-	// 	if (selectedOption === wineHistory[i]) {
-	// 		// merlot        !== null
-	// 		console.log('this was a dupe');
-	// 		return wineHistory;
-
-	// 	} else {
-	// 		wineHistory.unshift(selectedOption);
-	// 		console.log(wineHistory);
-	// 		localStorage.setItem('wineItems', JSON.stringify(wineHistory));
-	// 	}
-	// }
-
-
+	if (temp.indexOf(selectedOption) === -1) {
+		temp.push(selectedOption);
+		localStorage.setItem('wineItems', JSON.stringify(temp));
+		wineHistory = temp; 
+		console.log('line 52 wineHistory',wineHistory);
+	} else {
+		wineHistory = temp;
+		console.log('line 56 wineHistory', wineHistory);
+	}
+	return wineHistory;
 };
 
 // load selected wines
