@@ -2,29 +2,179 @@
 M.AutoInit();
 
 // API VARIABLES GO HERE
-const cocktailApi = "https://www.thecocktaildb.com/api/json/v1/1/random.php"
+const cocktailApi = "https://www.thecocktaildb.com/api/json/v1/1/random.php";
+const unsplashApiKey = 'EE_GhE32LBWp_v-xfq5aidZGEPP4n4j3IAzvCZ-cEGw';
+// const apiKey = '97a4448b41f44c18bd70423cbfd292bb';
+// const apiKey = 'f9e4f37f62de4dba85137360011a63c2';
+ const apiKey = '3e4ea1bd7e9641199a76b70fb68b7c89';
+// const apiKey = '2e045af459ca42fda601b67a39611082';
 
 // DOM VARIABLES GO HERE
 const wineSelectorEl = document.querySelector('#wineSelector'); 
 const contentRow = document.querySelector('#contentRow');
 const headerEl = document.querySelector('#header');
-const foodSelectorEl = document.querySelector('#foodSelector');
 const randomPairingEl = document.querySelector('#randomPairing');
 const aboutUsEl = document.querySelector('#about-us');
 const wantCocktailEl = document.querySelector('#want-cocktail');
-const apiKey = '2e045af459ca42fda601b67a39611082';
+const historyEl = document.querySelector('#history');
 
+// ARRAYS FOR HARDCODED DATA GO
 const ourNames = ['Tim Weyel', 'Shy Gois', 'Leah Russell', 'Sydney Walcoff', 'Carlos Vadillo'];
 const ourTitles = ['Director of HTML', 'Data Courier', 'Github Cat Wrangler', 'Chief Mischief Officer (CMO)', 'Unpaid Intern'];
 
-//create a function to remove all html elements except the footer
+
+// REUSABLE FUNCTIONS
 const removeEl = () => {
 	headerEl.innerHTML = '';
 	contentRow.innerHTML = '';
 };
 
+// WINE DROPDOWN FUNCTIONS
+// save selected wines
+const saveWineHistory = (selectedOption) => {
+	
+	let wineHistory = [];
+	let temp = JSON.parse(localStorage.getItem("wineItems")) || [];
+	//console.log('temp', temp);
+
+	if (temp.indexOf(selectedOption) === -1) {
+		temp.push(selectedOption);
+		localStorage.setItem('wineItems', JSON.stringify(temp));
+		wineHistory = temp; 
+		//console.log('line 52 wineHistory',wineHistory);
+	} else {
+		wineHistory = temp;
+		//console.log('line 56 wineHistory', wineHistory);
+	}
+	return wineHistory;
+};
+
+// load selected wines
+const loadWineHistory = () => {
+	wineHistory = JSON.parse(localStorage.getItem('wineItems'));
+	console.log(wineHistory);
+};
+
+// get image for selected wine
+const getWineImage = (selectedOption, info) => {
+	const unsplashApiUrl = `https://api.unsplash.com/search/photos?client_id=${unsplashApiKey}&query=${selectedOption}-wine`;
+	fetch(unsplashApiUrl).then(function(response){
+		response.json().then(function(data){
+			let imgSrc = data.results[0].urls.raw;
+			infoCardGenerator(selectedOption, info, imgSrc);
+		})
+	})
+};
+
+// get title and description for selected wine
+const getWineData = (selectedOption) => {
+	const wineApiUrl = `https://api.spoonacular.com/food/wine/dishes?wine=${selectedOption}&apiKey=${apiKey}`;
+	fetch(wineApiUrl).then(function(response) {
+		response.json().then(function(data) {
+
+			const info = data.text;
+			const foodPairings = data.pairings;
+			for(let i=0; i < 3; i++) {
+				let currentFoodPairing = foodPairings[i];
+				console.log('current pairing: ' + currentFoodPairing);
+				getRecipes(currentFoodPairing);
+			}
+			getWineImage(selectedOption, info);
+		});
+	})
+};
+
+const infoCardConstructor = () => {
+	// info card column div
+	let infoCardDiv = document.createElement('div');
+	infoCardDiv.setAttribute("class", "col s12 m5 card");
+	infoCardDiv.setAttribute("id", "info-card-div");
+	// append info card column div to content row
+	contentRow.append(infoCardDiv);
+};
+
+// display info card with wine image, title and description
+const infoCardGenerator = (selectedOption, info, img) => {
+	let infoCardDiv = $('#info-card-div');
+
+	// info card image div
+	const cardImageDiv = document.createElement('div');
+	cardImageDiv.setAttribute("class", "card-image");
+	// append info card image div to info card column div
+	infoCardDiv.append(cardImageDiv);
+
+	// card image element
+	const cardImgEl = document.createElement('img');
+	cardImgEl.setAttribute("src", img);
+	// append image el to info card image div
+	cardImageDiv.append(cardImgEl);
+
+	// card title element 
+	const cardSpanEl = document.createElement('span');
+	cardSpanEl.setAttribute("class", "card-title");
+	cardSpanEl.textContent = selectedOption;
+	// append title span el to image div
+	cardImageDiv.append(cardSpanEl);
+
+	// card content div
+	const cardContentDiv = document.createElement('div');
+	cardContentDiv.setAttribute("class", "card-content");
+	// append card content div to infoCardDiv
+	infoCardDiv.append(cardContentDiv);
+
+	// create row div
+	const cardContentRow = document.createElement('div');
+	cardContentRow.setAttribute("class", "row");
+	// append row to infoCardDiv
+	cardContentDiv.append(cardContentRow);
+
+	// create description div and content
+	const descriptionDiv = document.createElement('div');
+	descriptionDiv.setAttribute("class", "col");
+	// append description
+	cardContentRow.append(descriptionDiv);
+
+	// create title el
+	const descriptionTitle = document.createElement('h4');
+	descriptionDiv.append(descriptionTitle);
+
+	descriptionTitle.textContent = 'Description';
+
+	// create description el
+	const descriptionContent = document.createElement('p');
+	descriptionDiv.append(descriptionContent);
+
+	descriptionContent.textContent = info;
+	// append info card div to info card col
+};
+
+// search for recipes that contained suggested food pairing
+const getRecipes = searchQuery => {
+	const pairingsApiUrl = `https://api.spoonacular.com/recipes/complexSearch?query=${searchQuery}&number=3&apiKey=${apiKey}`;
+	fetch(pairingsApiUrl).then(function(response) {
+		response.json().then(function(data) {
+			const recipeId = data.results[0].id
+			getRecipeData(recipeId);
+		})
+	})
+};
+
+// get recipe information for above listed recipes
+const getRecipeData = recipeId => {
+	const recipesApiUrl = `https://api.spoonacular.com/recipes/${recipeId}/information?includeNutrition=false&apiKey=${apiKey}`;
+	fetch(recipesApiUrl).then(function(response) {
+		response.json().then(function(data) {
+			const recipeTitle = data.title;
+			const recipeSummary = data.summary;
+			recipeCardGenerator(recipeTitle, recipeSummary)
+		})
+	});
+};
+
+// creates div for recipes
 const recipePageConstructor = () => {
 	const recipeCardDiv = document.createElement("div");
+	recipeCardDiv.setAttribute("id", "recipe-card-div");
 	const recipeUl = document.createElement("ul");
 	recipeUl.setAttribute("class", "collapsible");
 	recipeUl.setAttribute("id", "recipeUl");
@@ -33,19 +183,92 @@ const recipePageConstructor = () => {
 	contentRow.append(recipeCardDiv);
 };
 
-const listenerHandler = el => {
-	el.addEventListener('change', function() {
-		const selectedOption = this.options[this.selectedIndex].text;
-		const dataType = this.options[0].text.split(' ')[0];
-		validateDropdownType(dataType, selectedOption);
-		removeEl();
-		contentRow.setAttribute("class", "container row");
-		// these will go inside the fetch function because that's where we'll receive input for ratings, descr, and recipes
-		// infoCardGenerator(selectedOption, info, rating);
-		// recipeCardGenerator(firstProtein, secondProtein(if applicable),...n);
-	});	
+// generate expandable card for each recipe that will go inside recipePageConstructor and display data from getRecipeData function
+const recipeCardGenerator = (recipeTitle, recipeSummary) => {
+	// create `li` el
+	const recipeLi = document.createElement("li");
+	// create header div and set class to collapsible-header
+	const recipeHeaderDiv = document.createElement("div");
+	recipeHeaderDiv.setAttribute("class", "collapsible-header");
+	// create body div and set class to collapsible-body
+	const recipeBodyDiv = document.createElement("div");
+	recipeBodyDiv.classList= "collapsible-body";
+
+	// set content of header and body divs
+	recipeHeaderDiv.innerHTML = `<i class="material-icons">filter_drama</i> ${recipeTitle}`;
+
+	// create and append row
+	const recipeBodyRow = document.createElement('div');
+	recipeBodyRow.classList = "row";
+	recipeBodyDiv.append(recipeBodyRow);
+
+	// create and append text div
+	const recipeTextDiv = document.createElement('div');
+	recipeTextDiv.setAttribute("class", "col");
+	recipeBodyRow.append(recipeTextDiv);
+
+	// create recipe span
+	const recipeSpan = document.createElement('span');
+	recipeSpan.innerHTML = recipeSummary;
+	recipeTextDiv.append(recipeSpan);
+
+	// append everything
+	recipeLi.append(recipeHeaderDiv, recipeBodyDiv);
+	let recipeUl = $('#recipeUl');
+	recipeUl.append(recipeLi);
+
+	$(document).ready(function(){
+		$('.collapsible').collapsible();
+	});
 };
 
+// SUPRISE ME FUNCTIONS
+const surpriseMeData = () => {
+	const wines = ["Sauvignon Blanc", "Chardonnay", "Champagne", "Pinot Noir", "Merlot", "Shiraz", "Cabernet Sauvignon", "Malbec", "Sangiovese"];
+	const randomWineEl = Math.floor(Math.random() * wines.length);
+	const surpriseMeWine = wines[randomWineEl];
+	getWineData(surpriseMeWine);
+	removeEl();
+	contentRow.setAttribute("class", "container row");
+	infoCardConstructor();
+	recipePageConstructor();
+};
+
+// ABOUT US FUNCTIONS
+const aboutUs = () => {
+	removeEl();
+
+	const aboutUsHeader = document.createElement("h2");
+	aboutUsHeader.textContent = 'About Us';
+	aboutUsHeader.className = 'center';
+	aboutUsHeader.id = 'about-us-header';
+
+	const aboutUsBody = document.createElement("div");
+	aboutUsBody.innerHTML = `<div class="row center" id="card-holder-row"></div>`
+
+	contentRow.appendChild(aboutUsHeader);
+	contentRow.appendChild(aboutUsBody);
+
+	for (var i = 0; i < ourNames.length; i++) {
+		const cardHolderRow = document.querySelector('#card-holder-row');
+
+		const aboutUsCard = document.createElement("div");
+		aboutUsCard.classList = 'col s4 m2';
+		aboutUsCard.innerHTML = `<div class="card">
+		<div class="card-image">
+		  <img src="./assets/images/about-us-example-image.png">
+		</div>
+		<div class="card-content">
+		<span class="card-title">${ourNames[i]}</span>
+		  <p>${ourTitles[i]}</p>
+		</div>
+	  </div>`
+
+	  cardHolderRow.appendChild(aboutUsCard);
+	}
+};
+
+// COCKTAIL FUNCTIONS
 const getCocktail = function() {
 	fetch(cocktailApi).then(res => res.json()).then(function(response){
 	
@@ -76,7 +299,6 @@ const displayCocktail = function(drinkName, drinkRecipe, drinkImage, drinkDataCo
 
 	// Generating cocktail container 
 	const mainContainer = document.createElement('div');
-	mainContainer.setAttribute("class", "container");
 
 	// Insert the main row
 	const headerRow = document.createElement('div');
@@ -198,7 +420,6 @@ const displayCocktail = function(drinkName, drinkRecipe, drinkImage, drinkDataCo
 		}
 	}
 
-
 	contentRow.appendChild(mainContainer);
 
 	// Initialize the picture max
@@ -219,254 +440,117 @@ const displayCocktail = function(drinkName, drinkRecipe, drinkImage, drinkDataCo
 };
 
 wantCocktailEl.addEventListener('click', getCocktail);
-// fetch data
-const validateDropdownType = (dataType, selectedOption) => {
-	if(dataType == 'Wine') {
-		const wineApiUrl = `https://api.spoonacular.com/food/wine/dishes?wine=${selectedOption}&apiKey=${apiKey}`;
-		getWineData(wineApiUrl, selectedOption);
-	} else if(dataType == 'Food') {
-		const foodApiUrl = `https://api.spoonacular.com/food/wine/pairing?food=${selectedOption}&apiKey=${apiKey}`;
-		getFoodWithWineData(foodApiUrl, selectedOption);
+
+// HISTORY FUNCTIONS
+const displayHistory = () => {
+	removeEl();
+	loadWineHistory();
+	// History Greeting
+	const historyHeader = document.createElement("h2");
+	historyHeader.textContent = 'Pairing History';
+	historyHeader.className = 'center';
+	contentRow.append(historyHeader);
+
+	// History card row
+	const historyCardRow = document.createElement('div');
+	historyCardRow.setAttribute("class", "row");
+	contentRow.append(historyCardRow);
+
+	for(let i=0; i < wineHistory.length; i++) {
+		const wineItem = wineHistory[i];
+		const unsplashApiUrl = `https://api.unsplash.com/search/photos?client_id=${unsplashApiKey}&query=${wineItem}-wine`;
+		const wineApiUrl = `https://api.spoonacular.com/food/wine/dishes?wine=${wineItem}&apiKey=${apiKey}`;
+
+		console.log(wineItem);
+
+		// History card column
+		const historyCardCol = document.createElement('div');
+		historyCardCol.setAttribute("class", "col s12 m4");
+		historyCardRow.append(historyCardCol);
+
+		// History card
+		const historyCard = document.createElement('div');
+		historyCard.setAttribute("class", "card");
+		historyCardCol.append(historyCard);
+
+		// History card image
+		const historyImgDiv = document.createElement('div');
+		historyImgDiv.setAttribute("class", "card-image waves-effect waves-block waves-light");
+		historyCard.append(historyImgDiv);
+
+		fetch(unsplashApiUrl).then(function(response){
+			response.json().then(function(data){
+				let img = data.results[0].urls.raw;
+
+				// History image
+				const historyImg = document.createElement('img');
+				historyImg.setAttribute("class", "activator");
+				historyImg.setAttribute("src", img);
+				historyImgDiv.append(historyImg);
+			})
+		});
+
+		// History card content
+		const historyCardContent = document.createElement('div');
+		historyCardContent.setAttribute("class", "card-content");
+		historyCard.append(historyCardContent);
+
+		// History Card Title
+		const historyCardTitle = document.createElement('span');
+		historyCardTitle.setAttribute("class", "card-title activator grey-text text-darken-4");
+		historyCardTitle.textContent = wineItem;
+		historyCardContent.append(historyCardTitle)
+
+		const historyCardTitleIcon = document.createElement('i');
+		historyCardTitleIcon.setAttribute("class", "material-icons right");
+		historyCardTitleIcon.textContent = 'more_vert';
+		historyCardTitle.append(historyCardTitleIcon);
+
+		// History card info
+		const historyCardInfo = document.createElement('div');
+		historyCardInfo.setAttribute("class", "card-reveal");
+		historyCard.append(historyCardInfo);
+
+		// History info title
+		const historyInfoTitle = document.createElement('span');
+		historyInfoTitle.setAttribute("class", "card-title grey-text text-darken-4");
+		historyInfoTitle.textContent = wineItem;
+		historyCardInfo.append(historyInfoTitle);
+
+		// History icon
+		const historyInfoIcon = document.createElement('i');
+		historyInfoIcon.setAttribute("class", "material-icons right");
+		historyInfoIcon.textContent = 'close';
+		historyInfoTitle.append(historyInfoIcon);
+
+		fetch(wineApiUrl).then(function(response){
+			response.json().then(function(data) {
+				const info = data.text;
+
+				const historyInfo = document.createElement('p');
+				historyInfo.textContent = info;
+				historyCardInfo.append(historyInfo);
+			})
+		});
 	}
 };
 
-const getPairingsData = (searchQuery) => {
-	const pairingsApiUrl = `https://api.spoonacular.com/recipes/complexSearch?query=${searchQuery}&number=3&apiKey=${apiKey}`;
-	fetch(pairingsApiUrl).then(function(response) {
-		response.json().then(function(data) {
-			// need to get these 3 foods displayed on the collapisble/expandable recipe cards
-			// grab ID of recipe
-			const recipeId = data.results[0].id
-			getPairingsRecipes(recipeId);
-		})
-	})
-};
-
-const getPairingsRecipes = (recipeId) => {
-	const recipesApiUrl = `https://api.spoonacular.com/recipes/${recipeId}/information?includeNutrition=false&apiKey=${apiKey}`;
-	fetch(recipesApiUrl).then(function(response) {
-		response.json().then(function(data) {
-			const recipeTitle = data.title;
-			const recipeSummary = data.summary;
-			recipeCardGenerator(recipeTitle, recipeSummary)
-		})
-	});
-};
-
-const getImageData = (selectedOption, info) => {
-	const unsplashApiKey = 'EE_GhE32LBWp_v-xfq5aidZGEPP4n4j3IAzvCZ-cEGw';
-	const unsplashApiUrl = `https://api.unsplash.com/search/photos?client_id=${unsplashApiKey}&query=${selectedOption}`;
-	fetch(unsplashApiUrl).then(function(response){
-		response.json().then(function(data){
-			let imgSrc = data.results[0].urls.raw;
-			infoCardGenerator(selectedOption, info, imgSrc);
-		})
-	})
-};
-
-// wine with food
-const getWineData = (apiUrl, selectedOption) => {
-	fetch(apiUrl).then(function(response) {
-		response.json().then(function(data) {
-			const info = data.text;
-			const foodPairings = data.pairings;
-			for(let i=0; i < 3; i++) {
-				let currentPairing = foodPairings[i];
-				getPairingsData(currentPairing);
-			}
-			getImageData(selectedOption, info);
-		});
-	})		
-};
- 
-
-// food with wine
-const getFoodWithWineData = (apiUrl, selectedOption) => {
-	fetch(apiUrl).then(function(response) {
-		response.json().then(function(data) {
-			// console.log(data);
-			const pairingText = data.pairingText;
-			let pairedWines = data.pairedWines;
-			// need to get these 3 wines displayed on the collapisble/expandable recipe cards
-			// console.log(pairedWines);
-			getImageData(selectedOption, pairingText);
-		});
-	})
-};
-
-// refactoring information display function
-const infoCardGenerator = function(selectedOption, info, img) {
-	// info card column div
-	const infoCardDiv = document.createElement('div');
-	infoCardDiv.setAttribute("class", "col s12 m5 card");
-	// append info card column div to content row
-	contentRow.append(infoCardDiv);
-
-	// info card image div
-	const cardImageDiv = document.createElement('div');
-	cardImageDiv.setAttribute("class", "card-image");
-	// append info card image div to info card column div
-	infoCardDiv.append(cardImageDiv);
-
-	// card image element
-	const cardImgEl = document.createElement('img');
-	cardImgEl.setAttribute("src", img);
-	// append image el to info card image div
-	cardImageDiv.append(cardImgEl);
-
-	// card title element 
-	const cardSpanEl = document.createElement('span');
-	cardSpanEl.setAttribute("class", "card-title");
-	cardSpanEl.textContent = selectedOption;
-	// append title span el to image div
-	cardImageDiv.append(cardSpanEl);
-
-	// card content div
-	const cardContentDiv = document.createElement('div');
-	cardContentDiv.setAttribute("class", "card-content");
-	// append card content div to infoCardDiv
-	infoCardDiv.append(cardContentDiv);
-
-	// create row div
-	const cardContentRow = document.createElement('div');
-	cardContentRow.setAttribute("class", "row");
-	// append row to infoCardDiv
-	cardContentDiv.append(cardContentRow);
-
-	// create description div and content
-	const descriptionDiv = document.createElement('div');
-	descriptionDiv.setAttribute("class", "col");
-	// append description
-	cardContentRow.append(descriptionDiv);
-
-	// create title el
-	const descriptionTitle = document.createElement('h4');
-	descriptionDiv.append(descriptionTitle);
-
-	descriptionTitle.textContent = 'Description';
-
-	// create description el
-	const descriptionContent = document.createElement('p');
-	descriptionDiv.append(descriptionContent);
-
-	descriptionContent.textContent = info;
-	// append info card div to info card col
-	contentRow.append(infoCardDiv);
-	// append info card 
-
-	// Call the collapsible function again when the element is rendered
-	$(document).ready(function(){
-		$('.collapsible').collapsible();
-	});
-	
+// clicking wine selector dropdown
+wineSelectorEl.addEventListener('change', function() {
+	const selectedOption = this.options[this.selectedIndex].text;
+	saveWineHistory(selectedOption);
+	getWineData(selectedOption);
+	removeEl();
+	contentRow.setAttribute("class", "container row");
+	infoCardConstructor();
 	recipePageConstructor();
-};
+});
 
-const recipeCardGenerator = (recipeTitle, recipeSummary) => {
-	// create `li` el
-	const recipeLi = document.createElement("li");
-	// create header div and set class to collapsible-header
-	const recipeHeaderDiv = document.createElement("div");
-	recipeHeaderDiv.setAttribute("class", "collapsible-header");
-	// create body div and set class to collapsible-body
-	const recipeBodyDiv = document.createElement("div");
-	recipeBodyDiv.classList= "collapsible-body";
-
-	// set content of header and body divs
-	recipeHeaderDiv.innerHTML = `<i class="material-icons">filter_drama</i> ${recipeTitle}`;
-
-	// create and append row
-	const recipeBodyRow = document.createElement('div');
-	recipeBodyRow.classList = "row";
-	recipeBodyDiv.append(recipeBodyRow);
-
-	// create and append text div
-	const recipeTextDiv = document.createElement('div');
-	recipeTextDiv.setAttribute("class", "col s11 m11 l11 xl11");
-	recipeBodyRow.append(recipeTextDiv);
-
-	// create recipe span
-	const recipeSpan = document.createElement('span');
-	recipeSpan.innerHTML = recipeSummary;
-	recipeTextDiv.append(recipeSpan);
-
-	// create like button div
-	const likeButtonDiv = document.createElement('div');
-	likeButtonDiv.setAttribute('class', 'col s1 m1 l1 xl1 favorites');
-	recipeBodyRow.append(likeButtonDiv);
-
-	// create like button
-	const likeButton = document.createElement('i');
-	likeButton.setAttribute('class', 'material-icons');
-	likeButton.textContent = 'favorite_border';
-	likeButtonDiv.append(likeButton);
-	likeButton.addEventListener("click", function() {
-		likeButton.textContent = 'favorite';
-	})
-
-	// append everything
-	recipeLi.append(recipeHeaderDiv, recipeBodyDiv);
-	let recipeUl = $('#recipeUl');
-	recipeUl.append(recipeLi);
-};
-
-const surpriseMeData = () => {
-	removeEl();
-
-	const wines = ["Sauvignon Blanc", "Chardonnay", "Champagne", "Pinot Noir", "Merlot", "Shiraz", "Cabernet Sauvignon", "Malbec", "Sangiovese"];
-	const randomWineEl = Math.floor(Math.random() * wines.length);
-	const surpriseMeWine = wines[randomWineEl];
-	console.log(surpriseMeWine);
-	validateDropdownType('Wine', surpriseMeWine);
-};
-
-const aboutUs = () => {
-	removeEl();
-
-	const aboutUsHeader = document.createElement("h2");
-	aboutUsHeader.textContent = 'About Us';
-	aboutUsHeader.className = 'center';
-	aboutUsHeader.id = 'about-us-header';
-
-	const aboutUsBody = document.createElement("div");
-	aboutUsBody.innerHTML = `<div class="row center" id="card-holder-row"></div>`
-
-	contentRow.appendChild(aboutUsHeader);
-	contentRow.appendChild(aboutUsBody);
-
-	for (var i = 0; i < ourNames.length; i++) {
-		const cardHolderRow = document.querySelector('#card-holder-row');
-
-		const aboutUsCard = document.createElement("div");
-		aboutUsCard.classList = 'col s4 m2';
-		aboutUsCard.innerHTML = `<div class="card">
-		<div class="card-image">
-		  <img src="./assets/images/about-us-example-image.png">
-		</div>
-		<div class="card-content">
-		<span class="card-title">${ourNames[i]}</span>
-		  <p>${ourTitles[i]}</p>
-		</div>
-	  </div>`
-
-	  cardHolderRow.appendChild(aboutUsCard);
-	}
-};
-
-/* Wine with Food perspective
-
-- get food pairings from wine api call
-for loop
-- recipeFetch(foodPairings[i])
-- input recipe info into for loop creating recipe cards
-
-*/
-
-
-listenerHandler(wineSelectorEl);
-listenerHandler(foodSelectorEl);
+// clicking 'Surprise Me' link
 randomPairingEl.addEventListener('click', surpriseMeData);
-
 
 // clicking about us link
 aboutUsEl.addEventListener('click', aboutUs);
+
+// clicking history link
+historyEl.addEventListener('click', displayHistory);
