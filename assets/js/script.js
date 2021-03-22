@@ -32,8 +32,8 @@ const removeEl = () => {
 // WINE DROPDOWN FUNCTIONS
 // save selected wines
 const saveWineHistory = (selectedOption) => {
-	wineHistory.unshift(selectedOption);
 	localStorage.setItem('wineItems', JSON.stringify(wineHistory));
+	wineHistory.unshift(selectedOption);
 };
 
 // load selected wines
