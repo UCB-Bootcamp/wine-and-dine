@@ -12,10 +12,14 @@ const foodSelectorEl = document.querySelector('#foodSelector');
 const randomPairingEl = document.querySelector('#randomPairing');
 const aboutUsEl = document.querySelector('#about-us');
 const wantCocktailEl = document.querySelector('#want-cocktail');
-const apiKey = '2e045af459ca42fda601b67a39611082';
+const apiKey = '3e4ea1bd7e9641199a76b70fb68b7c89';
 
 const ourNames = ['Tim Weyel', 'Shy Gois', 'Leah Russell', 'Sydney Walcoff', 'Carlos Vadillo'];
 const ourTitles = ['Director of HTML', 'Data Courier', 'Github Cat Wrangler', 'Chief Mischief Officer (CMO)', 'Unpaid Intern'];
+
+// History Variables
+var wineHistory = [];
+var foodHistory = [];
 
 //create a function to remove all html elements except the footer
 const removeEl = () => {
@@ -197,7 +201,6 @@ const displayCocktail = function(drinkName, drinkRecipe, drinkImage, drinkDataCo
 		}
 	}
 
-
 	contentRow.appendChild(mainContainer);
 
 	// Initialize the picture max
@@ -267,6 +270,9 @@ const getImageData = (selectedOption, info) => {
 const getWineData = (apiUrl, selectedOption) => {
 	fetch(apiUrl).then(function(response) {
 		response.json().then(function(data) {
+
+			localStorage.setItem("wineItems", JSON.stringify(wineHistory.push(selectedOption)));
+
 			const info = data.text;
 			const foodPairings = data.pairings;
 			for(let i=0; i < 3; i++) {
@@ -275,15 +281,18 @@ const getWineData = (apiUrl, selectedOption) => {
 			}
 			getImageData(selectedOption, info);
 		});
-	})		
+	})
 };
  
+
 
 // food with wine
 const getFoodWithWineData = (apiUrl, selectedOption) => {
 	fetch(apiUrl).then(function(response) {
 		response.json().then(function(data) {
-			// console.log(data);
+
+			localStorage.setItem("foodItems", JSON.stringify(selectedOption));
+
 			const pairingText = data.pairingText;
 			let pairedWines = data.pairedWines;
 			// need to get these 3 wines displayed on the collapisble/expandable recipe cards
