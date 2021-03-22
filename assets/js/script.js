@@ -21,7 +21,8 @@ const historyEl = document.querySelector('#history');
 // ARRAYS FOR HARDCODED DATA GO
 const ourNames = ['Tim Weyel', 'Shy Gois', 'Leah Russell', 'Sydney Walcoff', 'Carlos Vadillo'];
 const ourTitles = ['Director of HTML', 'Data Courier', 'Github Cat Wrangler', 'Chief Mischief Officer (CMO)', 'Unpaid Intern'];
-let wineHistory = [];
+var wineHistory = ["test"];
+console.log('line 24', wineHistory);
 
 // REUSABLE FUNCTIONS
 const removeEl = () => {
@@ -32,10 +33,27 @@ const removeEl = () => {
 // WINE DROPDOWN FUNCTIONS
 // save selected wines
 const saveWineHistory = (selectedOption) => {
+	console.log('selectedOption', selectedOption);
+
+	if (!wineHistory) {
+		wineHistory = [];
+	};
+	console.log('wineHistory', wineHistory);
 	wineHistory.unshift(selectedOption);
 	console.log(wineHistory);
 
-	localStorage.setItem('wineItems', JSON.stringify(wineHistory));
+	for (let i=0; i<wineHistory.length; i++) {
+		console.log('wineHistory[i]', wineHistory[i]);
+		if (selectedOption === wineHistory[i]) {
+			// merlot        !== null
+			console.log('this was a dupe');
+			return wineHistory;
+
+		} else {
+			localStorage.setItem('wineItems', JSON.stringify(wineHistory));
+		}
+	}
+
 };
 
 // load selected wines
@@ -492,7 +510,12 @@ const displayHistory = () => {
 		const historyCardTitle = document.createElement('span');
 		historyCardTitle.setAttribute("class", "card-title activator grey-text text-darken-4");
 		historyCardTitle.textContent = wineItem;
-		historyCard.append(historyCardTitle)
+		historyCardContent.append(historyCardTitle)
+
+		const historyCardTitleIcon = document.createElement('i');
+		historyCardTitleIcon.setAttribute("class", "material-icons right");
+		historyCardTitleIcon.textContent = 'more_vert';
+		historyCardTitle.append(historyCardTitleIcon);
 
 		// History card info
 		const historyCardInfo = document.createElement('div');
@@ -509,7 +532,7 @@ const displayHistory = () => {
 		const historyInfoIcon = document.createElement('i');
 		historyInfoIcon.setAttribute("class", "material-icons right");
 		historyInfoIcon.textContent = 'close';
-		historyCardInfo.append(historyInfoIcon);
+		historyInfoTitle.append(historyInfoIcon);
 
 		fetch(wineApiUrl).then(function(response){
 			response.json().then(function(data) {
