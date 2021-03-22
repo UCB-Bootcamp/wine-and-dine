@@ -19,10 +19,6 @@ const apiKey = '97a4448b41f44c18bd70423cbfd292bb';
 const ourNames = ['Tim Weyel', 'Shy Gois', 'Leah Russell', 'Sydney Walcoff', 'Carlos Vadillo'];
 const ourTitles = ['Director of HTML', 'Data Courier', 'Github Cat Wrangler', 'Chief Mischief Officer (CMO)', 'Unpaid Intern'];
 
-// History Variables
-var wineHistory = [];
-var foodHistory = [];
-
 //create a function to remove all html elements except the footer
 const removeEl = () => {
 	headerEl.innerHTML = '';
@@ -269,8 +265,7 @@ const getImageData = (selectedOption, info) => {
 const getWineData = (apiUrl, selectedOption) => {
 	fetch(apiUrl).then(function(response) {
 		response.json().then(function(data) {
-
-			localStorage.setItem("wineItems", JSON.stringify(wineHistory.push(selectedOption)));
+			saveWineHistory(selectedOption);
 
 			const info = data.text;
 			const foodPairings = data.pairings;
@@ -282,6 +277,25 @@ const getWineData = (apiUrl, selectedOption) => {
 		});
 	})
 };
+
+const saveWineHistory = (selectedOption) => {
+	wineHistory.unshift(selectedOption);
+	localStorage.setItem('wineItems', JSON.stringify(wineHistory));
+}
+
+const loadWineHistory = () => {
+	wineHistory = JSON.parse(localStorage.getItem('wineItems'));
+
+	if (!wineHistory) {
+		wineHistory = [];
+	};
+
+	for(let i=0; i < wineHistory.length; i++) {
+		console.log(wineHistory[i]);
+	}
+};
+
+loadWineHistory();
 
 // refactoring information display function
 const infoCardGenerator = function(selectedOption, info, img) {
