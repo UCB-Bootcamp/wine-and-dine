@@ -10,6 +10,16 @@ html {
 	box-sizing: border-box;
 }
 
+.card-image img {
+	width: 284px; /* width of container */
+    height: 195px; /* height of container */
+    object-fit: cover;
+}
+
+.dropdown-content li>span {
+	color: #2196f3;
+}
+
 .hero {
 	width: 100vw;
 	height: 100vh;
@@ -87,6 +97,16 @@ html {
 #main {
 	min-height: 90vh;
 }
+
+#main-card {
+	min-height: 25vh;
+}
+
+#main-card .card {
+	margin: auto;
+}
+
+
 .main-heading {
 	text-align: center;
 }
@@ -95,7 +115,9 @@ html {
 	text-align: center;
 }
 
-
+.surprise i {
+	padding-bottom: 20px;
+}
 
 /*FOOTER CSS*/
   body {

@@ -85,6 +85,17 @@ const getWineData = (selectedOption) => {
 };
 
 const infoCardConstructor = () => {
+	// Title column Div
+	const wineHeaderDiv = document.createElement('div');
+	wineHeaderDiv.setAttribute("class", "col s12");
+	contentRow.append(wineHeaderDiv);
+
+	// Cocktail Welcome Title Generator
+	const wineHeader = document.createElement("h2");
+	wineHeader.textContent = 'Here are your pairings:';
+	wineHeader.className = 'center';
+	wineHeaderDiv.append(wineHeader);
+
 	// info card column div
 	let infoCardDiv = document.createElement('div');
 	infoCardDiv.setAttribute("class", "col s12 m5 card");
@@ -195,7 +206,7 @@ const recipeCardGenerator = (recipeTitle, recipeSummary) => {
 	recipeBodyDiv.classList= "collapsible-body";
 
 	// set content of header and body divs
-	recipeHeaderDiv.innerHTML = `<i class="material-icons">filter_drama</i> ${recipeTitle}`;
+	recipeHeaderDiv.innerHTML = `<i class="material-icons">restaurant</i> ${recipeTitle}`;
 
 	// create and append row
 	const recipeBodyRow = document.createElement('div');

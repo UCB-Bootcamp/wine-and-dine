@@ -60,9 +60,10 @@
 
                 <!-- OPTION INPUTS -->
                 <div class="row">
-                    <div class="col s12">
+                    <div class="col s12 card" id="main-card">
                         <div class="input-field col s12">
-                            <select id="wineSelector">
+                            <br/>
+                            <select class="grey darken-4-text" id="wineSelector">
                                 <option value="" disabled selected>Wine With Food</option>
                                 <option value="Sauvignon Blanc">Sauvignon Blanc</option>
                                 <option value="Chardonnay">Chardonnay</option>
@@ -74,18 +75,21 @@
                                 <option value="Malbec">Malbec</option>
                                 <option value="Sangiovese">Sangiovese</option>
                             </select>
-                            <label>Select a Wine</label>
                         </div>
                     </div>
                 </div>
 
                 <!-- RANDOM INPUTS -->
                 <div class="row">
-                    <div class="col s12 surprise">
-                        <h2>Surprise Me!</h2>
+                    <div class="col s12 surprise card" id="surprise">
+                        <h4>Surprise Me With a Pairing!</h4>
+                        <br/>
                         <a id="randomPairing" href="#" class="btn-floating btn-large scale-transition scale-in">
-                            <i class="material-icons">arrow_downward</i>
+                            <i class="material-icons pink darken-4">wine_bar</i>
                         </a>
+                        <br/>
+                        <br/>
+                        <br/>
                     </div>
                 </div>
             </div>
@@ -106,9 +110,9 @@
                         </ul>
                     </div>
                     <div class="col s12 m4 l2">
-                        <a class="grey-text text-lighten-4" href="#!"><i class="small material-icons" id="want-cocktail">local_bar</i></a>
-                        <a class="grey-text text-lighten-4" href="index.html"><i class="small material-icons">wine_bar</i></a>
-                        <a class="grey-text text-lighten-4" href="#!"><i class="small material-icons" id='history'>history</i></a>
+                        <a class="grey-text text-lighten-4 tooltipped" data-position="top" data-tooltip="Cocktail Please!"" href="#!"><i class="small material-icons" id="want-cocktail">local_bar</i></a>
+                        <a class="grey-text text-lighten-4 tooltipped" data-position="top" data-tooltip="Return Home" href="index.html"><i class="small material-icons">home</i></a>
+                        <a class="grey-text text-lighten-4 tooltipped" data-position="top" data-tooltip="Pairing History" href="#!"><i class="small material-icons" id='history'>history</i></a>
 
                     </div>
                 </div>
@@ -125,11 +129,11 @@
         <script src="./assets/js/script.js"></script>
 
         <!-- Google Analytics: change UA-XXXXX-Y to be our site's ID. (IN CASE WE PUBLISH FOR REAL) -->
-        <script>
+<!--         <script>
             window.ga = function () { ga.q.push(arguments) }; ga.q = []; ga.l = +new Date;
             ga('create', 'UA-XXXXX-Y', 'auto'); ga('set', 'anonymizeIp', true); ga('set', 'transport', 'beacon'); ga('send', 'pageview')
         </script>
-        <script src="https://www.google-analytics.com/analytics.js" async></script>
+        <script src="https://www.google-analytics.com/analytics.js" async></script> -->
     </body>
 
 </html>
