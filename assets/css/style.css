@@ -10,7 +10,7 @@ html {
 	box-sizing: border-box;
 }
 
-.card-image img {
+.history img {
 	width: 284px; /* width of container */
     height: 195px; /* height of container */
     object-fit: cover;

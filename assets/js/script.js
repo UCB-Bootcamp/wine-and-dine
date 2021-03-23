@@ -339,7 +339,7 @@ const displayCocktail = function(drinkName, drinkRecipe, drinkImage, drinkDataCo
 
 	// Horizontal Card Creation
 	const cocktailCardHz = document.createElement('div');
-	cocktailCardHz.setAttribute("class", "card horizontal");
+	cocktailCardHz.setAttribute("class", "card horizontal cocktail-card");
 	cocktailInfoCard.append(cocktailCardHz);
 
 	// Image div Goes First
@@ -445,7 +445,7 @@ const displayCocktail = function(drinkName, drinkRecipe, drinkImage, drinkDataCo
 		$('.horizontal').removeClass('horizontal');
 		}
 		if(860 <= $(window).width()){
-			$('.card').addClass('horizontal');
+			$('.cocktail-card').addClass('horizontal');
 		}
     });
 };
@@ -481,7 +481,7 @@ const displayHistory = () => {
 
 		// History card
 		const historyCard = document.createElement('div');
-		historyCard.setAttribute("class", "card");
+		historyCard.setAttribute("class", "card history");
 		historyCardCol.append(historyCard);
 
 		// History card image
