@@ -1,10 +1,17 @@
-Wine and Dine is an application built to help users pair wine with food, or food with wine. Wine and Dine also offers alternative beer and cocktails options for users who would like a beverage other than wine.
+### Overview
+Wine and Dine is an application built to help users pair wine with food. Wine and Dine also offers alternative cocktail options for users who would like a beverage other than wine.
 
-When a user selects a wine, they are given a list of recipes that would pair with their selected wine. We also allow users to select a food item, and display a several wine options that would pair with their selected food item.
+### Features
+When a user selects a wine, they are given a list of recipes that would pair with their selected wine. 
 
-Users can like selected wines or recipes and have the option of viewing their liked items to revisit at a later time.
+A user can also hit a "Surprise Me!" button to be given a random wine and food pairing suggestion.
 
-The application itself is built using HTML, CSS and Javascript. It also uses Materialize as a UI Framework, and used icons from Material.io. It's deployed using Github Pages.
+Users can view previously selected wines to revisit at a later time in their history page.
+
+If a user feels like a cocktail instead of wine, they can select the cocktail button where they are given cocktail suggestions and a list of ingredients.
+
+### Technology
+The application itself is built using HTML, CSS and Javascript as core languages. It utilizes JQuery, and Materialize as a UI Framework. It uses icons from Material.io. It uses APIs from Unsplash, Spoonacular and the Cocktail DB. It's deployed using Github Pages.
 
 The deployed application can be found [here](https://ucb-bootcamp.github.io/wine-and-dine/).
 
