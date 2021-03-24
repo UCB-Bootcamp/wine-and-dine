@@ -35,16 +35,13 @@ const saveWineHistory = (selectedOption) => {
 	
 	let wineHistory = [];
 	let temp = JSON.parse(localStorage.getItem("wineItems")) || [];
-	//console.log('temp', temp);
 
 	if (temp.indexOf(selectedOption) === -1) {
 		temp.push(selectedOption);
 		localStorage.setItem('wineItems', JSON.stringify(temp));
 		wineHistory = temp; 
-		//console.log('line 52 wineHistory',wineHistory);
 	} else {
 		wineHistory = temp;
-		//console.log('line 56 wineHistory', wineHistory);
 	}
 	return wineHistory;
 };
@@ -52,7 +49,6 @@ const saveWineHistory = (selectedOption) => {
 // load selected wines
 const loadWineHistory = () => {
 	wineHistory = JSON.parse(localStorage.getItem('wineItems'));
-	console.log(wineHistory);
 };
 
 // get image for selected wine
@@ -76,7 +72,6 @@ const getWineData = (selectedOption) => {
 			const foodPairings = data.pairings;
 			for(let i=0; i < 3; i++) {
 				let currentFoodPairing = foodPairings[i];
-				console.log('current pairing: ' + currentFoodPairing);
 				getRecipes(currentFoodPairing);
 			}
 			getWineImage(selectedOption, info);
@@ -471,8 +466,6 @@ const displayHistory = () => {
 		const wineItem = wineHistory[i];
 		const unsplashApiUrl = `https://api.unsplash.com/search/photos?client_id=${unsplashApiKey}&query=${wineItem}-wine`;
 		const wineApiUrl = `https://api.spoonacular.com/food/wine/dishes?wine=${wineItem}&apiKey=${apiKey}`;
-
-		console.log(wineItem);
 
 		// History card column
 		const historyCardCol = document.createElement('div');
